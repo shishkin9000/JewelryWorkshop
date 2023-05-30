@@ -1,5 +1,6 @@
 package ru.hotkto.jewelryworkshop.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -9,12 +10,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "products")
+@Table(name = "metal_types")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SequenceGenerator(name = "default_generator", sequenceName = "products_sequence", allocationSize = 1)
-public class Product extends GenericModel {
-    private Long itemNumber;
+@SequenceGenerator(name = "default_generator", sequenceName = "metal_types_sequence", allocationSize = 1)
+public class MetalType extends GenericModel{
+
+    @Column(name = "title")
+    private String title;
+
 }

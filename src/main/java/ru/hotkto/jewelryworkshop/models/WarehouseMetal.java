@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "metals")
+@Table(name = "warehouse_metals")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SequenceGenerator(name = "default_generator", sequenceName = "metals_sequence", allocationSize = 1)
-public class Metal extends GenericModel{
-
+@SequenceGenerator(name = "default_generator", sequenceName = "warehouse_metals_sequence", allocationSize = 1)
+public class WarehouseMetal extends GenericModel{
 }

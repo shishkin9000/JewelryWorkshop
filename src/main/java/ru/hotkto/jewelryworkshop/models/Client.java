@@ -6,17 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "employees")
+@Table(name = "clients")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SequenceGenerator(name = "default_generator", sequenceName = "employees_sequence", allocationSize = 1)
-public class Employee extends GenericModel{
+@SequenceGenerator(name = "default_generator", sequenceName = "clients_sequence", allocationSize = 1)
+public class Client extends GenericModel{
 
     @Column(name = "first_name")
     private String firstName;
@@ -30,16 +29,6 @@ public class Employee extends GenericModel{
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "address")
-    private String address;
-
-    @ManyToOne
-    @JoinColumn(name = "position_id")
-    private EmployeePosition employeePosition;
-
-    @Column(name = "birth_date")
-    private LocalDate birthDate;
-
-    @OneToMany(mappedBy = "employee")
-    private List<WorkerOrder> workerOrders;
+    @OneToMany(mappedBy = "client")
+    private List<ClientOrder> orders;
 }

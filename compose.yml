@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: JewelryWorkshop
+    image: postgres:15.2
+    environment:
+      POSTGRES_DB: "jewelry_workshop"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "pOs1945tgres"
+    ports:
+      - "5432:5432"
