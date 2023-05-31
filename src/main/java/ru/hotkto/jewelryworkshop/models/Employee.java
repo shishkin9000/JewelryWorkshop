@@ -33,8 +33,8 @@ public class Employee extends GenericModel{
     @Column(name = "address")
     private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "position_id")
+    @OneToOne
+    @JoinColumn(name = "position_id", foreignKey = @ForeignKey(name = "FK_EMPLOYEE_POSITION"))
     private EmployeePosition employeePosition;
 
     @Column(name = "birth_date")
