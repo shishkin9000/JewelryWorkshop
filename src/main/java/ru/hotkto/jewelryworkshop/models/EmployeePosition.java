@@ -17,8 +17,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @SequenceGenerator(name = "default_generator", sequenceName = "employees_positions_sequence", allocationSize = 1)
 public class EmployeePosition extends GenericModel {
+
     @Column(name = "title")
     public String title;
+
     @Column(name = "description")
     public String description;
 }

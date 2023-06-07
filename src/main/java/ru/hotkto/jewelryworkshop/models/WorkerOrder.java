@@ -18,11 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 @SequenceGenerator(name = "default_generator", sequenceName = "worker_orders_sequence", allocationSize = 1)
 public class WorkerOrder extends GenericModel{
+
     @Column(name = "order_date_time")
     private LocalDateTime orderDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", foreignKey = @ForeignKey(name = "FK_WORKER_ORDER_EMPLOYEE"))
+    @JoinColumn(name = "employee_id",
+                nullable = false,
+                foreignKey = @ForeignKey(name = "FK_WORKER_ORDER_EMPLOYEE"))
     private Employee employee;
 
     @OneToMany(mappedBy = "workerOrder")

@@ -22,18 +22,21 @@ public class Gem extends GenericModel{
     @Column(name = "color")
     private String color;
 
-    @Column(name = "weight")
-    private int weight;
+    @Column(name = "carat_weight")
+    private int caratWeight;
 
     @Column(name = "quantity")
     private int quantity;
 
     @ManyToOne
-    @JoinColumn(name = "warehouse_finished_product_id")
-    private WarehouseFinishedProduct warehouseFinishedProduct;
+    @JoinColumn(name = "warehouse_finished_product_id",
+            foreignKey = @ForeignKey(name = "FK_GEM_WAREHOUSE_FINISHED_ITEM"))
+    private WarehouseFinishedItem warehouseFinishedItem;
 
     @ManyToOne
-    @JoinColumn(name = "worker_order_id")
+    @JoinColumn(name = "worker_order_id",
+            foreignKey = @ForeignKey(name = "FK_ORDER_CLIENT"))
     private WorkerOrder workerOrder;
+
 
 }

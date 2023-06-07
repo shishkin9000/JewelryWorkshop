@@ -16,9 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @SequenceGenerator(name = "default_generator", sequenceName = "clients_orders_sequence", allocationSize = 1)
-public class ClientOrder extends GenericModel{
-    @Column(name = "order_date_time")
-    private LocalDateTime orderDateTime;
+public class ClientOrder extends GenericModel {
 
     @Column(name = "is_completed")
     private boolean isCompleted;
@@ -26,13 +24,16 @@ public class ClientOrder extends GenericModel{
     @Column(name = "description")
     private String description;
 
+    @Column(name = "deadline")
+    private LocalDate deadline;
+
+    @Column(name = "completed_when")
+    private LocalDate completedWhen;
+
     @ManyToOne
     @JoinColumn(name = "client_id",
             nullable = false,
-            foreignKey =@ForeignKey(name = "FK_ORDER_CLIENT"))
+            foreignKey = @ForeignKey(name = "FK_ORDER_CLIENT"))
     private Client client;
-
-    @Column(name = "deadline")
-    private LocalDate deadline;
 
 }

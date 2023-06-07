@@ -23,11 +23,17 @@ public class Metal extends GenericModel{
     private int weight;
 
     @ManyToOne
-    @JoinColumn(name = "warehouse_finished_product_id")
-    private WarehouseFinishedProduct warehouseFinishedProduct;
+    @JoinColumn(name = "warehouse_finished_product_id",
+            foreignKey = @ForeignKey(name = "FK_METAL_WAREHOUSE_FINISHED_ITEM"))
+    private WarehouseFinishedItem warehouseFinishedItem;
 
     @ManyToOne
-    @JoinColumn(name = "worker_order_id")
+    @JoinColumn(name = "worker_order_id",
+            foreignKey = @ForeignKey(name = "FK_WORKER_ORDER"))
     private WorkerOrder workerOrder;
 
+    @ManyToOne
+    @JoinColumn(name = "client_order_id",
+            foreignKey = @ForeignKey(name = "FK_CLIENT_ORDER"))
+    private ClientOrder clientOrder;
 }

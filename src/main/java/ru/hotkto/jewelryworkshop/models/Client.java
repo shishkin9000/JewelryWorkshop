@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SequenceGenerator(name = "default_generator", sequenceName = "clients_sequence", allocationSize = 1)
-public class Client extends GenericModel{
+public class Client extends GenericModel {
 
     @Column(name = "first_name")
     private String firstName;

@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SequenceGenerator(name = "default_generator", sequenceName = "employees_sequence", allocationSize = 1)
-public class Employee extends GenericModel{
+public class Employee extends GenericModel {
 
     @Column(name = "first_name")
     private String firstName;
@@ -33,13 +33,16 @@ public class Employee extends GenericModel{
     @Column(name = "address")
     private String address;
 
-    @OneToOne
-    @JoinColumn(name = "position_id", foreignKey = @ForeignKey(name = "FK_EMPLOYEE_POSITION"))
-    private EmployeePosition employeePosition;
-
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "employee")
     private List<WorkerOrder> workerOrders;
+
+    @OneToMany(mappedBy = "employee")
+    private List<ClientOrder> clientOrders;
+
+    @OneToOne
+    @JoinColumn(name = "position_id", foreignKey = @ForeignKey(name = "FK_EMPLOYEE_POSITION"))
+    private EmployeePosition employeePosition;
 }
