@@ -18,10 +18,10 @@ import java.util.List;
 public class FinishedItem extends GenericModel {
 
     @Column(name = "item_code")
-    private Long itemCode;
+    private int itemCode;
 
     @Column(name = "net_cost")
-    private int net_cost;
+    private double net_cost;
 
     @Column(name = "description")
     private String description;
