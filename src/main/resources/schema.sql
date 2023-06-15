@@ -1,6 +1,6 @@
 create table clients
 (
-    id           bigserial unique,
+    id           bigserial primary key,
     created_by   varchar(50),
     created_when timestamp,
     is_deleted   boolean default false,
@@ -13,7 +13,7 @@ create table clients
 
 create table employees_positions
 (
-    id           bigserial unique,
+    id           bigserial primary key,
     created_by   varchar(50),
     created_when timestamp,
     is_deleted   boolean default false,
@@ -27,7 +27,7 @@ create table employees_positions
 
 create table employees
 (
-    id           bigserial unique,
+    id           bigserial primary key ,
     created_by   varchar(50),
     created_when timestamp,
     is_deleted   boolean default false,
@@ -41,7 +41,7 @@ create table employees
     middle_name  VARCHAR(50) not null,
     last_name    VARCHAR(50) not null,
     phone        VARCHAR(50) not null,
-    address      VARCHAR(50) not null,
+    address      VARCHAR(250) not null,
     birth_date   DATE        not null,
     position_id  bigint      not null,
 
@@ -50,7 +50,7 @@ create table employees
 
 create table clients_orders
 (
-    id             bigserial unique,
+    id             bigserial primary key ,
     created_by     varchar(50),
     created_when   timestamp,
     is_deleted     boolean default false,
@@ -71,7 +71,7 @@ create table clients_orders
 
 create table gems_types
 (
-    id           bigserial unique,
+    id           bigserial primary key ,
     created_by   varchar(50),
     created_when timestamp,
     is_deleted   boolean default false,
@@ -84,7 +84,7 @@ create table gems_types
 
 create table metals_types
 (
-    id           bigserial unique,
+    id           bigserial primary key ,
     created_by   varchar(50),
     created_when timestamp,
     is_deleted   boolean default false,
@@ -96,7 +96,7 @@ create table metals_types
 
 create table finished_items
 (
-    id           bigserial unique,
+    id           bigserial primary key ,
     created_by   varchar(50),
     created_when timestamp,
     is_deleted   boolean default false,
@@ -108,7 +108,7 @@ create table finished_items
     gems_info varchar(100),
     employee_id bigint,
     net_cost double precision,
-    description varchar(100),
+    description text,
     photo_path varchar(100),
 
     constraint fk_finished_item_employee foreign key (employee_id) references employees(id)
