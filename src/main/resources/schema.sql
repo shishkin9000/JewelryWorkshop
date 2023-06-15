@@ -94,24 +94,6 @@ create table metals_types
     title        varchar(50)
 );
 
-create table finished_items_metals
-(
-    finished_item_id bigint not null ,
-    metal_type_id bigint not null,
-    primary key (finished_item_id, metal_type_id),
-    constraint fk_finished_item foreign key (finished_item_id) references finished_items(id),
-    constraint fk_metal_type foreign key (metal_type_id) references metals_types(id)
-);
-
-create table finished_items_gems
-(
-    finished_item_id bigint not null ,
-    gem_type_id bigint not null,
-    primary key (finished_item_id, gem_type_id),
-    constraint fk_finished_item foreign key (finished_item_id) references finished_items(id),
-    constraint fk_gem_type foreign key (gem_type_id) references gems_types(id)
-);
-
 create table finished_items
 (
     id           bigserial unique,
@@ -122,13 +104,35 @@ create table finished_items
     deleted_when timestamp,
 
     item_code integer,
+    metals_info varchar(100),
+    gems_info varchar(100),
+    employee_id bigint,
+    net_cost double precision,
+    description varchar(100),
+    photo_path varchar(100),
 
-net_cost double precision,
-
-description varchar(100),
-
-photo_path varchar(100)
+    constraint fk_finished_item_employee foreign key (employee_id) references employees(id)
 );
+
+create table finished_items_metals_types
+(
+    finished_item_id bigint not null ,
+    metal_type_id bigint not null,
+    primary key (finished_item_id, metal_type_id),
+    constraint fk_finished_item_id foreign key (finished_item_id) references finished_items(id),
+    constraint fk_metal_type_id foreign key (metal_type_id) references metals_types(id)
+);
+
+create table finished_items_gems_types
+(
+    finished_item_id bigint not null ,
+    gem_type_id bigint not null,
+    primary key (finished_item_id, gem_type_id),
+    constraint fk_finished_item_id foreign key (finished_item_id) references finished_items(id),
+    constraint fk_gem_type_id foreign key (gem_type_id) references gems_types(id)
+);
+
+
 
 
 

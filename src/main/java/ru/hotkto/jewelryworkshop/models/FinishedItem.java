@@ -30,7 +30,7 @@ public class FinishedItem extends GenericModel {
     private String photo_path;
 
     @Column(name = "metals_info")
-    private String metalInfo;
+    private String metalsInfo;
 
     @Column(name = "gems_info")
     private String gemsInfo;
