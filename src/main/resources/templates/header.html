@@ -1,0 +1,46 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+     th:fragment="header">
+    <nav class="navbar navbar-expand-lg bg-dark" style="background-color: #0067b8">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/" style="color: #ffffff">Jewelry Workshop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-link">
+                        <a class="color-white" aria-current="page" href="/clients">Clients</a>
+                    </li>
+                    <li class="nav-link">
+                        <a class="color-white" aria-current="page" href="/orders">Orders</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('USER'))" class="nav-link">
+                        <!--            при повторном нажатии на кнопку падает с ошибкой: два раза подставляется /users/users-->
+                        <!--              "/" в начале решает эту проблему-->
+                        <a class="white-text" aria-current="page" href="/users/my-orders">My orders</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
+                        <a class="white-text" aria-current="page" href="/orders">Orders</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
+                        <a class="white-text" aria-current="page" href="/users">Users</a>
+                    </li>
+                </ul>
+                <div sec:authorize="isAuthenticated() && !hasRole('ADMIN')">
+                    <!--          <a class="nav-link active" style="float: right" href="/users/my-account">Account</a>-->
+                    <a class="white-text" style="float: right" href="/users/my-account" th:text="${#authentication.getPrincipal().getUsername()}"></a>
+                </div>
+
+                <form class="d-flex" sec:authorize="!isAuthenticated()">
+                    <a href="/login" class="btn btn-primary" role="button" aria-disabled="true">Log In</a>
+                </form>
+                <form class="d-flex" sec:authorize="isAuthenticated()">
+                    <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Log out</a>
+                </form>
+            </div>
+        </div>
+    </nav>
+</div>
