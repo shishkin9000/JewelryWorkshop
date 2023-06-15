@@ -37,6 +37,7 @@ public class FinishedItem extends GenericModel {
 
     @ManyToOne
     @JoinColumn(name = "employee_id",
+            nullable = false,
             foreignKey = @ForeignKey(name = "FK_FINISHED_ITEM_EMPLOYEE"))
     private Employee employee;
 
