@@ -1,16 +1,15 @@
 package ru.hotkto.jewelryworkshop.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
-@Table(name = "metal_types")
+@Table(name = "metals_types")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,4 +20,11 @@ public class MetalType extends GenericModel{
     @Column(name = "title")
     private String title;
 
+    @ManyToMany
+    @JoinTable(
+            name = "finished_items_metals_types",
+            joinColumns = @JoinColumn(name = "metal_type_id"),
+            inverseJoinColumns = @JoinColumn(name = "finished_item_id")
+    )
+    private List<FinishedItem> finishedItems;
 }

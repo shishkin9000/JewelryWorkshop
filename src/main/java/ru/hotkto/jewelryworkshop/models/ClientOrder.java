@@ -18,22 +18,27 @@ import java.time.LocalDateTime;
 @SequenceGenerator(name = "default_generator", sequenceName = "clients_orders_sequence", allocationSize = 1)
 public class ClientOrder extends GenericModel {
 
-    @Column(name = "is_completed")
-    private boolean isCompleted;
-
     @Column(name = "description")
     private String description;
 
     @Column(name = "deadline")
     private LocalDate deadline;
 
+    @Column(name = "is_completed")
+    private boolean isCompleted;
+
     @Column(name = "completed_when")
-    private LocalDate completedWhen;
+    private LocalDateTime completedWhen;
 
     @ManyToOne
     @JoinColumn(name = "client_id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_ORDER_CLIENT"))
+                nullable = false,
+                foreignKey = @ForeignKey(name = "FK_ORDER_CLIENT_ID"))
     private Client client;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id",
+                foreignKey = @ForeignKey(name = "FK_ORDER_EMPLOYEE_ID"))
+    private Employee employee;
 
 }

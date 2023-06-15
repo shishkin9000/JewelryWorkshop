@@ -23,4 +23,7 @@ public class EmployeePosition extends GenericModel {
 
     @Column(name = "description")
     public String description;
+
+    @Column(name = "role")
+    public String role;
 }

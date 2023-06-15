@@ -1,0 +1,50 @@
+
+insert into clients (created_by, created_when, full_name, phone) values
+('initial script', now(), 'Vasiliy Shishkin', '9654741234'),
+('initial script', now(), 'Marysa Scoggan', '6328111690'),
+('initial script', now(), 'Mommy Tutin', '6189741559'),
+('initial script', now(), 'Kristi Spelling', '1177422962'),
+('initial script', now(), 'Calhoun Dash', '1935975745'),
+('initial script', now(), 'Demetris Lillegard', '3644086987'),
+('initial script', now(), 'Retha Roubert', '3862576199'),
+('initial script', now(), 'Zarla Sussams', '3693885911'),
+('initial script', now(), 'Sayer Phillp', '3743693732'),
+('initial script', now(), 'Marylinda Billborough', '9131765181'),
+('initial script', now(), 'Ardith Keerl', '3296492032'),
+('initial script', now(), 'Leonore Colledge', '7103774126'),
+('initial script', now(), 'Lennie Goldthorpe', '1056574133'),
+('initial script', now(), 'Shaughn Hillborne', '5952990963'),
+('initial script', now(), 'Nolan Fayre', '2795806001'),
+('initial script', now(), 'Aharon Zorzutti', '9846908408'),
+('initial script', now(), 'Kingsly Dumingo', '4883617731'),
+('initial script', now(), 'Graham Blesdill', '7501759450'),
+('initial script', now(), 'Yoshiko Jacomb', '6085104292'),
+('initial script', now(), 'Napoleon Burrows', '1714785314'),
+('initial script', now(), 'Mortie Elves', '4316105261');
+
+insert into employees_positions(title, description, role) values
+('jeweller', 'ordinary employee, authorized to create and view client orders', 'user'),
+('manager', 'authorized for all user actions, plus all other actions', 'manager'),
+('director', 'director can create and delete all', 'director');
+
+insert into employees (created_by, created_when, first_name, middle_name, last_name, phone, address, birth_date, position_id) values
+('initial script', now(), 'Mahala', 'Maura', 'Olland', '622-738-9223', '304 Forest Street', '1978-01-23', 1),
+('initial script', now(), 'Jori', 'Renado', 'Ligertwood', '488-478-8998', '5284 Lakeland Alley', '1963-08-24', 1),
+('initial script', now(), 'Mateo', 'Gnni', 'Barthelemy', '145-677-5126', '701 Ramsey Park', '1956-12-22', 1),
+('initial script', now(), 'Stanislaus', 'Garvin', 'Tacker', '350-362-2352', '5 Texas Place', '1981-07-26', 1),
+('initial script', now(), 'Meta', 'Gonzales', 'Leopard', '847-855-6253', '94 Bonner Place', '1966-10-07', 1),
+('initial script', now(), 'Latrena', 'June', 'Schollick', '368-851-4741', '68 Nancy Avenue', '1998-11-15', 1),
+('initial script', now(), 'Jakie', 'Gabby', 'Wasselin', '908-938-5747', '7 Grayhawk Plaza', '1964-09-09', 1),
+('initial script', now(), 'Lil', 'Heddie', 'Fintoph', '966-196-9201', '2087 Fair Oaks Place', '1974-01-12', 1),
+('initial script', now(), 'Griz', 'Stormi', 'Duffil', '420-334-3412', '719 Westend Center', '1977-03-20', 1),
+('initial script', now(),  'Ansell', 'Robinet', 'Curnow', '312-328-1376', '9 Alpine Alley', '1981-07-20', 1),
+('initial script', now(),  'Catriona', 'Ki', 'Batistelli', '930-908-1631', '70859 Oak Valley Avenue', '1985-05-19', 1),
+('initial script', now(),  'Louise', 'Thea', 'McIlvenny', '954-656-7989', '043 Aberg Way', '1974-10-21', 1),
+('initial script', now(),  'Evita', 'Glenden', 'Cudde', '830-164-5294', '99 Banding Junction', '1969-11-11', 1),
+('initial script', now(),  'Roze', 'Bili', 'Zuanelli', '447-986-9003', '20 Stephen Center', '1992-03-19', 1),
+('initial script', now(),  'Hymie', 'Ester', 'Dowling', '661-788-5395', '825 Johnson Terrace', '1986-09-02', 1),
+('initial script', now(),  'Selestina', 'Romeo', 'Tassaker', '153-625-2540', '28 Nancy Circle', '1990-05-19', 1),
+('initial script', now(),  'Arel', 'Mikel', 'Scanlon', '940-208-7181', '22238 Hauk Place', '1991-08-17', 2),
+('initial script', now(),  'Iago', 'Lacee', 'Braune', '120-170-5579', '8824 Chinook Parkway', '1982-12-20', 2),
+('initial script', now(),  'Goraud', 'Audi', 'Jakobsson', '206-801-0274', '7323 Graedel Hill', '1950-07-16', 2),
+('initial script', now(),  'Putin', 'Vladimir', 'Vladimirovich', '777-000-0000', 'Kremlin main tower', '1952-10-07', 3);

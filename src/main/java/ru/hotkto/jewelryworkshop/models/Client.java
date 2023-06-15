@@ -17,18 +17,12 @@ import java.util.List;
 @SequenceGenerator(name = "default_generator", sequenceName = "clients_sequence", allocationSize = 1)
 public class Client extends GenericModel {
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "full_name", nullable = false)
+    private String fullName;
 
-    @Column(name = "middle_name")
-    private String middleName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @OneToMany(mappedBy = "client")
-    private List<ClientOrder> orders;
+    private List<ClientOrder> clientOrders;
 }
