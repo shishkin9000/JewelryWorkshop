@@ -1,9 +1,11 @@
 <div xmlns:th="http://www.thymeleaf.org"
      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
      th:fragment="header">
-    <nav class="navbar navbar-expand-lg bg-dark" style="background-color: #0067b8">
+    <nav class="navbar navbar-expand-lg gold-background" style="background-color: #0067b8">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/" style="color: #ffffff">Jewelry Workshop</a>
+            <a class="navbar-brand" href="/" style="color: #ffffff">
+                <img src="/img/jewelry.png" width="32" height="32" alt="">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +37,7 @@
                 </div>
 
                 <form class="d-flex" sec:authorize="!isAuthenticated()">
-                    <a href="/login" class="btn btn-primary" role="button" aria-disabled="true">Log In</a>
+                    <a href="/login" class="btn btn-light" role="button" aria-disabled="true">Log In</a>
                 </form>
                 <form class="d-flex" sec:authorize="isAuthenticated()">
                     <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Log out</a>

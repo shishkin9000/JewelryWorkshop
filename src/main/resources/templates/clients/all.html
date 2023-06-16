@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+    <script th:inline="javascript"></script>
+    <style>
+        a {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div>
+        <hr class="hr"/>
+        <h3>Client search</h3>
+        <form method="POST" th:action="@{/clients/search}" th:object="${clientSearchForm}">
+            <div class="mt-0 row g-2">
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="clientsName" type="text" class="form-control" id="clientsName" placeholder="clientsPhone">
+                        <label for="clientsName">Name</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="clientsPhone" type="text" class="form-control" id="clientsPhone" placeholder="clientsPhone">
+                        <label for="clientsPhone">Phone</label>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <button type="submit" class="btn btn-secondary">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <h1>List of all clients</h1>
+    <div class="row">
+        <div>
+            <div class="col">
+                <a sec:authorize="isAuthenticated()"
+                   href="clients/add"
+                   class="btn btn-primary"
+                   role="button"
+                   style="float: right"
+                   aria-disabled="true">Add client
+                </a>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Full name</th>
+                <th scope="col">Phone</th>
+<!--                <th scope="col">isDeleted?</th>-->
+<!--                <th scope="col">Update</th>-->
+<!--                <th scope="col">Restore</th>-->
+<!--                <th scope="col">SOFT delete</th>-->
+<!--                <th scope="col">HARD delete</th>-->
+            </tr>
+            </thead>
+            <tr th:each="client : ${clients}">
+                <td>
+                    <a class="text-link text-blue" th:href="'/directors/' + ${client.getId()}"
+                       th:text="${client.getFullName()}"></a>
+                </td>
+                <td th:text="${client.getPhone()}"></td>
+<!--                <td th:text="${client.isDeleted()}"></td>-->
+<!--                <td>-->
+<!--                    sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->
+<!--                    <div>-->
+<!--                        <a class="btn btn-sm btn-outline-success" th:href="'/clients/update/' + ${client.getId()}">Update</a>-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <div>-->
+<!--                        <a th:if="${client.isDeleted()}"-->
+<!--                           class="btn btn-sm btn-outline-warning"-->
+<!--                           th:href="'/clients/restore/' + ${client.getId()}"-->
+<!--                           onclick="return confirm('The client will be RESTORED')">Restore</a>-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <div>-->
+<!--                        <a th:if="${!client.isDeleted()}"-->
+<!--                           class="btn btn-sm btn-outline-danger"-->
+<!--                           th:href="'/clients/soft-delete/' + ${client.getId()}"-->
+<!--                           onclick="return confirm('The client will be SOFT DELETED')">SOFT Delete</a>-->
+<!--                    </div>-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    <div>-->
+<!--                        <a th:if="${client.isDeleted()}"-->
+<!--                           class="btn btn-sm btn-outline-danger"-->
+<!--                           th:href="'/clients/hard-delete/' + ${client.getId()}"-->
+<!--                           onclick="return confirm('The client will be HARD!!! DELETED')">HARD Delete</a>-->
+<!--                    </div>-->
+<!--                </td>-->
+            </tr>
+        </table>
+        <div>
+            <nav aria-label="Pagination" th:if="${clients.totalPages gt 0}">
+                <ul class="pagination justify-content-center font-weight-bold">
+                    <li class="page-item" th:classappend="${clients.number eq 0} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/clients?page={id}(id=${clients.number lt 2 ? 1 : clients.number})}"
+                           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i eq clients.number + 1} ? 'active'"
+                        th:each="i : ${#numbers.sequence( 1, clients.totalPages, 1)}">
+                        <a class="page-link" th:href="@{/clients?page={id}(id=${i})}" th:text="${i}"
+                           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${clients.number eq clients.totalPages - 1} ? 'disabled'">
+                        <a class="page-link"
+                           th:href="@{/clients?page={id}(id=${clients.number + 2})}"
+                           aria-label="Next" title="Next Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

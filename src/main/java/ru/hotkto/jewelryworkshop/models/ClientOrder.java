@@ -30,6 +30,9 @@ public class ClientOrder extends GenericModel {
     @Column(name = "completed_when")
     private LocalDateTime completedWhen;
 
+    @Column(name = "price")
+    private Integer price;
+
     @ManyToOne
     @JoinColumn(name = "client_id",
                 nullable = false,

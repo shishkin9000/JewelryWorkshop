@@ -12,3 +12,19 @@ footer {
 .color-white:hover {
     color: cornflowerblue;
 }
+
+.footer {
+    background-color: rgba(252, 185, 65, 0.58);
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.gold-background {
+    background-color: darkgoldenrod !important;
+}
+
+.margin_0_padding_0 {
+    margin: 0 !important;
+    padding: 0 !important;
+}
