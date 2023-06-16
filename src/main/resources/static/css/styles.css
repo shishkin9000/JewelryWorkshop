@@ -4,13 +4,23 @@ footer {
     bottom: 0;
 }
 
+h3 {
+    text-align: center;
+}
+
 .color-white {
     color: white;
     text-decoration: none;
 }
 
+.text-color-white {
+    color: white !important;
+    text-decoration: none;
+}
+
+
 .color-white:hover {
-    color: cornflowerblue;
+    color: burlywood;
 }
 
 .footer {
@@ -22,6 +32,10 @@ footer {
 
 .gold-background {
     background-color: darkgoldenrod !important;
+}
+
+.gold-background-light {
+    background-color: rgba(252, 185, 65, 0.58);
 }
 
 .margin_0_padding_0 {

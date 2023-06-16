@@ -17,8 +17,6 @@
 <body>
 <div layout:fragment="content">
     <div>
-        <hr class="hr"/>
-        <h3>Client search</h3>
         <form method="POST" th:action="@{/clients/search}" th:object="${clientSearchForm}">
             <div class="mt-0 row g-2">
                 <div class="col-md">
@@ -34,29 +32,30 @@
                     </div>
                 </div>
                 <div class="row g-2">
-                    <button type="submit" class="btn btn-secondary">Search</button>
+                    <button type="submit" class="btn gold-background text-color-white">Search</button>
                 </div>
             </div>
         </form>
     </div>
     <hr>
-    <h1>List of all clients</h1>
     <div class="row">
-        <div>
-            <div class="col">
-                <a sec:authorize="isAuthenticated()"
-                   href="clients/add"
-                   class="btn btn-primary"
-                   role="button"
-                   style="float: right"
-                   aria-disabled="true">Add client
-                </a>
-            </div>
-        </div>
+            <!--                sec:authorize="isAuthenticated()"-->
+            <a
+
+                    href="clients/add"
+                    class="btn btn-lg btn-outline-dark"
+                    role="button"
+                    style="float: right"
+                    aria-disabled="true">Add client
+            </a>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
         <table class="table">
             <thead>
             <tr>
-                <th scope="col">Full name</th>
+                <th scope="col">ID</th>
                 <th scope="col">Phone</th>
 <!--                <th scope="col">isDeleted?</th>-->
 <!--                <th scope="col">Update</th>-->
@@ -67,7 +66,7 @@
             </thead>
             <tr th:each="client : ${clients}">
                 <td>
-                    <a class="text-link text-blue" th:href="'/directors/' + ${client.getId()}"
+                    <a class="text-link text-dark-emphasis text-decoration-none" th:href="'/directors/' + ${client.getId()}"
                        th:text="${client.getFullName()}"></a>
                 </td>
                 <td th:text="${client.getPhone()}"></td>
@@ -104,11 +103,13 @@
 <!--                </td>-->
             </tr>
         </table>
+        </div>
+        <div class="col"></div>
         <div>
             <nav aria-label="Pagination" th:if="${clients.totalPages gt 0}">
                 <ul class="pagination justify-content-center font-weight-bold">
                     <li class="page-item" th:classappend="${clients.number eq 0} ? 'disabled'">
-                        <a class="page-link"
+                        <a class="page-link text-black"
                            th:href="@{/clients?page={id}(id=${clients.number lt 2 ? 1 : clients.number})}"
                            aria-label="Previous" title="Previous Page" data-toggle="tooltip">
                             <span aria-hidden="true">&laquo;</span>
@@ -116,11 +117,11 @@
                     </li>
                     <li class="page-item" th:classappend="${i eq clients.number + 1} ? 'active'"
                         th:each="i : ${#numbers.sequence( 1, clients.totalPages, 1)}">
-                        <a class="page-link" th:href="@{/clients?page={id}(id=${i})}" th:text="${i}"
+                        <a class="page-link text-dark bg-light" th:href="@{/clients?page={id}(id=${i})}" th:text="${i}"
                            th:title="${'Page '+ i}" data-toggle="tooltip"></a>
                     </li>
                     <li class="page-item" th:classappend="${clients.number eq clients.totalPages - 1} ? 'disabled'">
-                        <a class="page-link"
+                        <a class="page-link  text-black"
                            th:href="@{/clients?page={id}(id=${clients.number + 2})}"
                            aria-label="Next" title="Next Page" data-toggle="tooltip">
                             <span aria-hidden="true">&raquo;</span>

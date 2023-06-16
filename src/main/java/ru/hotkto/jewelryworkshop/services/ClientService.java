@@ -24,7 +24,7 @@ public class ClientService extends GenericService<Client, ClientDTO> {
 
     public Page<ClientDTO> getAll(Pageable pageable) {
         Page<Client> clientsPage = clientsRepository.findAll(pageable);
-        List<ClientDTO> clientDTOList = mapper.toDTOs(clientsPage.getContent());
+        List<ClientDTO> clientDTOList = genericMapper.toDTOs(clientsPage.getContent());
         return new PageImpl<>(clientDTOList, pageable, clientsPage.getTotalElements());
     }
 }

@@ -37,7 +37,7 @@
                 </div>
 
                 <form class="d-flex" sec:authorize="!isAuthenticated()">
-                    <a href="/login" class="btn btn-light" role="button" aria-disabled="true">Log In</a>
+                    <a href="/login" class="btn btn-light btn-outline-dark" role="button" aria-disabled="true">Log In</a>
                 </form>
                 <form class="d-flex" sec:authorize="isAuthenticated()">
                     <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Log out</a>

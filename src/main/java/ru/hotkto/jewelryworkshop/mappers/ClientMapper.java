@@ -30,7 +30,8 @@ public class ClientMapper extends GenericMapper<Client, ClientDTO> {
 
     @PostConstruct
     protected void setupMapper() {
-//        modelMapper.createTypeMap(Client.class, ClientDTO.class)
+        modelMapper.createTypeMap(Client.class, ClientDTO.class).setPostConverter(toDTOConverter());
+        modelMapper.createTypeMap(ClientDTO.class, Client.class).setPostConverter(toEntityConverter());
 
     }
 }

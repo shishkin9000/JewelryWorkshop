@@ -14,30 +14,31 @@ import java.util.List;
 @Service
 public abstract class GenericService<E extends GenericModel, D extends GenericDTO> {
 
-    protected final GenericRepository<E> repository;
-    protected final GenericMapper<E, D> mapper;
+    protected final GenericRepository<E> genericRepository;
+    protected final GenericMapper<E, D> genericMapper;
 
 
-    protected GenericService(GenericRepository<E> repository, GenericMapper<E, D> mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
+    @SuppressWarnings("all")
+    protected GenericService(GenericRepository<E> genericRepository, GenericMapper<E, D> genericMapper) {
+        this.genericRepository = genericRepository;
+        this.genericMapper = genericMapper;
     }
 
     public D create(D newObject) {
-        return mapper.toDTO(repository.save(mapper.toEntity(newObject)));
+        return genericMapper.toDTO(genericRepository.save(genericMapper.toEntity(newObject)));
     }
 
     public D getOne(final Long id) throws NotFoundException {
-        return mapper.toDTO(repository.findById(id)
+        return genericMapper.toDTO(genericRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Record with id=" + id + " not found!")));
     }
 
     public List<D> getAll() {
-        return mapper.toDTOs(repository.findAll());
+        return genericMapper.toDTOs(genericRepository.findAll());
     }
 
     public D update(D updatedDTO) {
-        return mapper.toDTO(repository.save(mapper.toEntity(updatedDTO)));
+        return genericMapper.toDTO(genericRepository.save(genericMapper.toEntity(updatedDTO)));
     }
 
     public D softDelete(final Long id, Employee employee) throws NotFoundException {
@@ -61,7 +62,7 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
 
     public D hardDelete(final Long id) throws NotFoundException {
         D objectForDelete = getOne(id);
-        repository.deleteById(id);
+        genericRepository.deleteById(id);
         return objectForDelete;
     }
 }
