@@ -1,12 +1,10 @@
 package ru.hotkto.jewelryworkshop.DTOs;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.hotkto.jewelryworkshop.models.ClientOrder;
-import ru.hotkto.jewelryworkshop.models.Employee;
 import ru.hotkto.jewelryworkshop.models.EmployeePosition;
 import ru.hotkto.jewelryworkshop.models.FinishedItem;
 
