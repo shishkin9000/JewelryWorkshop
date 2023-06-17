@@ -20,9 +20,7 @@ import java.util.List;
 public class EmployeeDTO extends GenericDTO {
     private String login;
     private String password;
-    private String firstName;
-    private String middleName;
-    private String lastName;
+    private String fullName;
     private String phone;
     private String address;
     private LocalDate birthDate;
