@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация о сотруднике</title>
+</head>
+<body>
+<form layout:fragment="content">
+    <div>
+        <h3 th:text="'Информация о сотруднике: ' + ${employee.getFullName()}"></h3>
+        <form class="row g-1">
+            <div class="mb-2 row">
+                <label for="position" class="col-sm-2 col-form-label no-border">Должность:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.getEmployeePosition().getTitle()}" type="text" readonly class="form-control-plaintext"
+                       id="position">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="phone" class="col-sm-2 col-form-label no-border">Телефон:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.getPhone()}" type="text" readonly class="form-control-plaintext" id="phone">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="address" class="col-sm-2 col-form-label no-border">Адрес:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.getAddress()}" type="text" readonly class="form-control-plaintext"
+                       id="address">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="birthDate" class="col-sm-2 col-form-label no-border">Дата рождения:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.getBirthDate()}" type="text" readonly class="form-control-plaintext"
+                       id="birthDate">
+                </div>
+            </div>
+            <hr class="hr"/>
+            <div class="mt-2">
+                <a class="text-link text-dark-emphasis text-decoration-none hover-blue"
+                   th:href="'/employees/' + ${employee.getId()}"
+                   th:text="${employee.getFullName()}"></a>
+                <a class="text-link text-dark-emphasis text-decoration-none hover-blue"
+                   th:href="'/employees/' + ${employee.getId()}"
+                   th:text="${employee.getFullName()}"></a>
+                <a class="text-link text-dark-emphasis text-decoration-none hover-blue"
+                   th:href="'/employees/' + ${employee.getId()}"
+                   th:text="${employee.getFullName()}"></a>
+                <div class="mt-2">
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Back</button>
+                </div>
+                <div class="mt-2">
+                    <a class="btn btn-lg btn-outline-dark"
+                       th:href="'/orders/' + ${e.getId()}"
+                       onclick="return confirm('The film will be HARD! DELETED')">HARD Delete</a>
+                </div>
+                <div class="mt-2">
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Back</button>
+                </div>
+<!--                <a-->
+
+<!--                        href="/employees"-->
+<!--                        class="btn btn-lg btn-outline-dark"-->
+<!--                        role="button"-->
+<!--                        style="float: right"-->
+<!--                        aria-disabled="true">Добавить заказ-->
+<!--                </a>-->
+            </div>
+            <!--      private List<ClientOrder> clientOrders;-->
+            <!--      private List<FinishedItem> finishedItems;-->
+
+        </form>
+    </div>
+</form>
+</body>
+</html>

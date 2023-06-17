@@ -6,7 +6,7 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Orders</title>
+    <title>Заказы</title>
     <script th:inline="javascript"></script>
     <style>
         a {
@@ -23,18 +23,18 @@
                     <div class="form-floating">
                         <input name="clientsName" type="text" class="form-control" id="clientsName"
                                placeholder="clientsPhone">
-                        <label for="clientsName">Client name</label>
+                        <label for="clientsName">ФИО заказчика</label>
                     </div>
                 </div>
                 <div class="col-md">
                     <div class="form-floating">
                         <input name="clientsPhone" type="text" class="form-control" id="clientsPhone"
                                placeholder="clientsPhone">
-                        <label for="clientsPhone">Employee</label>
+                        <label for="clientsPhone">ФИО работника</label>
                     </div>
                 </div>
                 <div class="row g-2">
-                    <button type="submit" class="btn gold-background text-color-white">Search</button>
+                    <button type="submit" class="btn gold-background text-color-white">Поиск</button>
                 </div>
             </div>
         </form>
@@ -44,11 +44,20 @@
         <!--                        sec:authorize="isAuthenticated()"-->
         <a
 
+                href="clients/add"
+                class="btn btn-lg btn-outline-dark"
+                role="button"
+                style="float: right"
+                aria-disabled="true">Добавить заказчика
+        </a>
+        <hr>
+        <a
+
                 href="orders/add"
                 class="btn btn-lg btn-outline-dark"
                 role="button"
                 style="float: right"
-                aria-disabled="true">Add order
+                aria-disabled="true">Добавить заказ
         </a>
     </div>
     <div class="row">
@@ -56,12 +65,12 @@
             <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Description</th>
-                <th scope="col">Deadline</th>
-                <th scope="col">Price</th>
-                <th scope="col">Client</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Employee</th>
+                <th scope="col">Описание</th>
+                <th scope="col">Выполнить до</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Заказчик</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Сотрудник</th>
                 <!--                <th scope="col">isDeleted?</th>-->
                 <!--                <th scope="col">Update</th>-->
                 <!--                <th scope="col">Restore</th>-->
@@ -80,7 +89,7 @@
                 <td th:text="${order.getPrice()}"></td>
                 <td th:text="${order.getClientDTO().getFullName()}"></td>
                 <td th:text="${order.getClientDTO().getPhone()}"></td>
-                <td th:text="${order.getEmployeeDTO().getFirstName() + ' ' + order.getEmployeeDTO().getLastName()}"></td>
+                <td th:text="${order.getEmployeeDTO().getFullName()}"></td>
                 <!--                <td th:text="${client.isDeleted()}"></td>-->
                 <!--                <td>-->
                 <!--                    sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->

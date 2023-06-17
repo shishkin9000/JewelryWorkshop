@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SequenceGenerator(name = "default_generator", sequenceName = "employees_sequence", allocationSize = 1)
+@SequenceGenerator(name = "default_generator", sequenceName = "employees_id_seq", allocationSize = 1)
 public class Employee extends GenericModel {
 
     @Column(name = "login")
@@ -37,7 +37,7 @@ public class Employee extends GenericModel {
     private LocalDate birthDate;
 
     @ManyToOne
-    @JoinColumn(name = "position_id", foreignKey = @ForeignKey(name = "FK_EMPLOYEE_POSITION_ID"))
+    @JoinColumn(name = "position_id", nullable = false, foreignKey = @ForeignKey(name = "FK_EMPLOYEE_POSITION_ID"))
     private EmployeePosition employeePosition;
 
     @OneToMany(mappedBy = "employee")

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавление сотрудника</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h3 class="mt-3 mb-3">Добавление сотрудника</h3>
+  <form style="max-width: 50vw" method="POST" th:action="@{/employees/add}" th:object="${employeeForm}">
+    <div class="mb-3">
+      <label for="login" class="form-label">Имя пользователя</label>
+      <input name="login" type="text" class="form-control" id="login">
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Пароль</label>
+      <input name="password" type="text" class="form-control" id="password">
+    </div>
+    <div class="mb-3">
+        <label for="fullName" class="form-label">ФИО</label>
+      <input name="fullName" type="text" class="form-control" id="fullName">
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">Телефон</label>
+      <input name="phone" type="text" class="form-control" id="phone">
+    </div>
+    <div class="mb-3">
+      <label for="address" class="form-label">Адрес</label>
+      <input name="address" type="text" class="form-control" id="address">
+    </div>
+    <div class="mb-3">
+      <label for="birthDate" class="form-label">Дата рождения</label>
+      <input name="birthDate" type="date" class="form-control" id="birthDate">
+    </div>
+    <div class="mb-3">
+      <label for="employeePosition" class="form-label">Должность</label>
+      <select class="form-select" name="employeePosition" id="employeePosition" required>
+          <option selected>Выберите должность из списка:</option>
+          <option selected th:value="1" th:text="ЮВЕЛИР"></option>
+          <option sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" th:value="2" th:text="МЕНЕДЖЕР"></option>
+          <option sec:authorize="isAuthenticated() && (hasRole('ADMIN'))" th:value="3" th:text="ДИРЕКТОР"></option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='../employees'">Назад</button>
+
+  </form>
+</div>
+</body>
+</html>

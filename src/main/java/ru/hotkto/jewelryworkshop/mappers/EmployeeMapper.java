@@ -1,5 +1,6 @@
 package ru.hotkto.jewelryworkshop.mappers;
 
+import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
@@ -25,8 +26,9 @@ public class EmployeeMapper extends GenericMapper<Employee, EmployeeDTO>{
 
     }
 
-    @Override
+    @PostConstruct
     protected void setupMapper() {
-
+        modelMapper.createTypeMap(Employee.class, EmployeeDTO.class).setPostConverter(toDTOConverter());
+        modelMapper.createTypeMap(EmployeeDTO.class, Employee.class).setPostConverter(toEntityConverter());
     }
 }

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Сотрудники</title>
+    <script th:inline="javascript"></script>
+    <style>
+        a {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div>
+        <form method="POST" th:action="@{/employees/search}" th:object="${employeeSearchForm}">
+            <div class="mt-0 row g-2">
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="clientsName" type="text" class="form-control" id="clientsName"
+                               placeholder="clientsPhone">
+                        <label for="clientsName">ФИО</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="clientsPhone" type="text" class="form-control" id="clientsPhone"
+                               placeholder="clientsPhone">
+                        <label for="clientsPhone">Телефон</label>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <button type="submit" class="btn gold-background text-color-white">Поиск</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="row">
+        <!--                sec:authorize="isAuthenticated()"-->
+        <a
+
+                href="employees/add"
+                class="btn btn-lg btn-outline-dark"
+                role="button"
+                style="float: right"
+                aria-disabled="true">Добавить сотрудника
+        </a>
+    </div>
+    <div class="row">
+<!--        <div class="col"></div>-->
+<!--        <div class="col-6">-->
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Имя пользователя</th>
+                    <th scope="col">Телефон</th>
+                    <th scope="col">Дата рождения</th>
+                    <th scope="col">Должность</th>
+                    <!--                <th scope="col">isDeleted?</th>-->
+                    <!--                <th scope="col">Update</th>-->
+                    <!--                <th scope="col">Restore</th>-->
+                    <!--                <th scope="col">SOFT delete</th>-->
+                    <!--                <th scope="col">HARD delete</th>-->
+                </tr>
+                </thead>
+                <tr th:each="employee : ${employees}">
+                    <td th:text="${employee.getId()}"></td>
+                    <td>
+                        <a class="text-link text-dark-emphasis text-decoration-none hover-blue"
+                           th:href="'/employees/' + ${employee.getId()}"
+                           th:text="${employee.getFullName()}"></a>
+                    </td>
+                    <td th:text="${employee.getPhone()}"></td>
+                    <td th:text="${employee.getBirthDate()}"></td>
+                    <td th:text="${employee.getEmployeePosition().getTitle()}"></td>
+                    <!--                <td th:text="${client.isDeleted()}"></td>-->
+                    <!--                <td>-->
+                    <!--                    sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->
+                    <!--                    <div>-->
+                    <!--                        <a class="btn btn-sm btn-outline-success" th:href="'/clients/update/' + ${client.getId()}">Update</a>-->
+                    <!--                    </div>-->
+                    <!--                </td>-->
+                    <!--                <td>-->
+                    <!--                    <div>-->
+                    <!--                        <a th:if="${client.isDeleted()}"-->
+                    <!--                           class="btn btn-sm btn-outline-warning"-->
+                    <!--                           th:href="'/clients/restore/' + ${client.getId()}"-->
+                    <!--                           onclick="return confirm('The client will be RESTORED')">Restore</a>-->
+                    <!--                    </div>-->
+                    <!--                </td>-->
+                    <!--                <td>-->
+                    <!--                    <div>-->
+                    <!--                        <a th:if="${!client.isDeleted()}"-->
+                    <!--                           class="btn btn-sm btn-outline-danger"-->
+                    <!--                           th:href="'/clients/soft-delete/' + ${client.getId()}"-->
+                    <!--                           onclick="return confirm('The client will be SOFT DELETED')">SOFT Delete</a>-->
+                    <!--                    </div>-->
+                    <!--                </td>-->
+                    <!--                <td>-->
+                    <!--                    <div>-->
+                    <!--                        <a th:if="${client.isDeleted()}"-->
+                    <!--                           class="btn btn-sm btn-outline-danger"-->
+                    <!--                           th:href="'/clients/hard-delete/' + ${client.getId()}"-->
+                    <!--                           onclick="return confirm('The client will be HARD!!! DELETED')">HARD Delete</a>-->
+                    <!--                    </div>-->
+                    <!--                </td>-->
+                </tr>
+            </table>
+        </div>
+<!--        <div class="col"></div>-->
+        <div>
+            <nav aria-label="Pagination" th:if="${employees.totalPages gt 0}">
+                <ul class="pagination justify-content-center font-weight-bold">
+                    <li class="page-item" th:classappend="${employees.number eq 0} ? 'disabled'">
+                        <a class="page-link text-black"
+                           th:href="@{/employees?page={id}(id=${employees.number lt 2 ? 1 : employees.number})}"
+                           aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:classappend="${i eq employees.number + 1} ? 'active'"
+                        th:each="i : ${#numbers.sequence( 1, employees.totalPages, 1)}">
+                        <a class="page-link text-dark bg-light" th:href="@{/employees?page={id}(id=${i})}" th:text="${i}"
+                           th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${employees.number eq employees.totalPages - 1} ? 'disabled'">
+                        <a class="page-link  text-black"
+                           th:href="@{/employees?page={id}(id=${employees.number + 2})}"
+                           aria-label="Next" title="Next Page" data-toggle="tooltip">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+<!--</div>-->
+</body>
+</html>

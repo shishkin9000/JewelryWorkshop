@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SequenceGenerator(name = "default_generator", sequenceName = "clients_orders_sequence", allocationSize = 1)
+@SequenceGenerator(name = "default_generator", sequenceName = "clients_orders_id_seq", allocationSize = 1)
 public class ClientOrder extends GenericModel {
 
     @Column(name = "description")

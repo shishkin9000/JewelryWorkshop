@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SequenceGenerator(name = "default_generator", sequenceName = "finished_items_sequence", allocationSize = 1)
+@SequenceGenerator(name = "default_generator", sequenceName = "finished_items_id_seq", allocationSize = 1)
 public class FinishedItem extends GenericModel {
 
     @Column(name = "item_code")

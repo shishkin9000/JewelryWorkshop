@@ -5,4 +5,5 @@ import ru.hotkto.jewelryworkshop.models.Employee;
 
 @Repository
 public interface EmployeesRepository extends GenericRepository<Employee> {
+    Employee findByLogin(String login);
 }

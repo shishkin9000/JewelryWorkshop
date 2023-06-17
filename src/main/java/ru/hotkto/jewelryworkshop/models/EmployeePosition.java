@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SequenceGenerator(name = "default_generator", sequenceName = "employees_positions_sequence", allocationSize = 1)
+@SequenceGenerator(name = "default_generator", sequenceName = "employees_positions_id_seq", allocationSize = 1)
 public class EmployeePosition extends GenericModel {
 
     @Column(name = "title")

@@ -23,6 +23,15 @@ h3 {
     color: burlywood;
 }
 
+.hover-blue:hover {
+    color: #0185ec !important;
+    background-color: goldenrod;
+}
+
+.text-align-center {
+    text-align: center;
+}
+
 .footer {
     background-color: rgba(252, 185, 65, 0.58);
     text-align: center;

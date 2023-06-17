@@ -14,33 +14,28 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-link">
-                        <a class="color-white" aria-current="page" href="/clients">Clients</a>
+                        <a class="color-white" aria-current="page" href="/clients">Заказчики</a>
                     </li>
                     <li class="nav-link">
-                        <a class="color-white" aria-current="page" href="/orders">Orders</a>
+                        <a class="color-white" aria-current="page" href="/orders">Заказы</a>
                     </li>
                     <li sec:authorize="isAuthenticated() && (hasRole('USER'))" class="nav-link">
                         <!--            при повторном нажатии на кнопку падает с ошибкой: два раза подставляется /users/users-->
                         <!--              "/" в начале решает эту проблему-->
-                        <a class="white-text" aria-current="page" href="/users/my-orders">My orders</a>
+                        <a class="white-text" aria-current="page" href="/users/my-orders">Мои заказы</a>
                     </li>
                     <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
-                        <a class="white-text" aria-current="page" href="/orders">Orders</a>
+                        <a class="color-white" aria-current="page" href="/orders">Все заказы</a>
                     </li>
                     <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
-                        <a class="white-text" aria-current="page" href="/users">Users</a>
+                        <a class="color-white" aria-current="page" href="/employees">Сотрудники</a>
                     </li>
                 </ul>
-                <div sec:authorize="isAuthenticated() && !hasRole('ADMIN')">
-                    <!--          <a class="nav-link active" style="float: right" href="/users/my-account">Account</a>-->
-                    <a class="white-text" style="float: right" href="/users/my-account" th:text="${#authentication.getPrincipal().getUsername()}"></a>
-                </div>
-
                 <form class="d-flex" sec:authorize="!isAuthenticated()">
-                    <a href="/login" class="btn btn-light btn-outline-dark" role="button" aria-disabled="true">Log In</a>
+                    <a href="/login" class="btn btn-light btn-outline-dark" role="button" aria-disabled="true">Войти</a>
                 </form>
                 <form class="d-flex" sec:authorize="isAuthenticated()">
-                    <a href="/logout" class="btn btn-primary" role="button" aria-disabled="true">Log out</a>
+                    <a href="/logout" class="btn btn-light btn-outline-dark" role="button" aria-disabled="true">Выйти</a>
                 </form>
             </div>
         </div>

@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@SequenceGenerator(name = "default_generator", sequenceName = "metal_types_sequence", allocationSize = 1)
+@SequenceGenerator(name = "default_generator", sequenceName = "metal_types_id_seq", allocationSize = 1)
 public class MetalType extends GenericModel{
 
     @Column(name = "title")
