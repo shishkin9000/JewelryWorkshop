@@ -47,8 +47,7 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
         objectForDelete.setDeletedWhen(LocalDateTime.now());
         objectForDelete.setDeletedBy(employee.getId() + " " +
                 employee.getEmployeePosition() + " " +
-                employee.getFirstName() + " " +
-                employee.getLastName());
+                employee.getFullName());
         return objectForDelete;
     }
 
