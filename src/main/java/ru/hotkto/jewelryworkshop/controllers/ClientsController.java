@@ -1,5 +1,6 @@
 package ru.hotkto.jewelryworkshop.controllers;
 
+import javassist.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,17 +38,34 @@ public class ClientsController {
         return "clients/all";
     }
 
-//    @PostMapping("/search")
-//    public String searchDirectors(@RequestParam(value = "page", defaultValue = "1") int page,
-//                                  @RequestParam(value = "size", defaultValue = "10") int pageSize,
-//                                  @ModelAttribute("clientSearchForm") Client client,
-//                                  Model model) {
-//        if (StringUtils.hasText(client.getFullName()) || StringUtils.hasLength(client.getPhone())) {
-//            PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC, "fullName"));
-//            model.addAttribute("clients", directorService.searchDirectors(directorDTO.getDirectorsFullName().trim(), pageRequest));
-//            return "directors/all";
-//        } else {
-//            return "redirect:/directors";
-//        }
-//    }
+    @PostMapping("/search")
+    public String searchClients(@RequestParam(value = "page", defaultValue = "1") int page,
+                                  @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                                  @ModelAttribute("clientSearchForm") ClientDTO clientDTO,
+                                  Model model) {
+            PageRequest pageRequest = PageRequest.of(page - 1,
+                                                    pageSize, Sort.by(Sort.Direction.ASC,
+                                         "full_name"));
+            model.addAttribute("clients", clientService.searchClients(clientDTO, pageRequest));
+            return "clients/all";
+    }
+
+    @GetMapping("/add")
+    public String addClient() {
+        return "clients/add";
+    }
+
+    @PostMapping("/add")
+    public String addClient(@ModelAttribute("clientForm") ClientDTO clientDTO) {
+        clientService.create(clientDTO);
+        return "redirect:/clients";
+    }
+
+    @GetMapping("/{id}")
+    public String viewInfo(@PathVariable Long id,
+                           Model model) throws NotFoundException {
+        ClientDTO clientDTO = clientService.getOne(id);
+        model.addAttribute("client", clientDTO);
+        return "clients/view-info";
+    }
 }

@@ -8,16 +8,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
-import ru.hotkto.jewelryworkshop.DTOs.EmployeePositionDTO;
-import ru.hotkto.jewelryworkshop.mappers.EmployeesPositionsMapper;
 import ru.hotkto.jewelryworkshop.models.EmployeePosition;
-import ru.hotkto.jewelryworkshop.repositories.EmployeesPositionsRepository;
 import ru.hotkto.jewelryworkshop.services.EmployeeService;
 import ru.hotkto.jewelryworkshop.services.EmployeesPositionsService;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/employees")
@@ -46,6 +42,8 @@ public class EmployeesController {
     public String getInfo(@PathVariable Long id,
                           Model model) throws NotFoundException {
         model.addAttribute("employee", employeeService.getOne(id));
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        model.addAttribute("formatter", formatter);
         return "employees/view-info";
     }
 
@@ -64,6 +62,25 @@ public class EmployeesController {
             case 3 -> employeePosition = employeesPositionsService.getEmployeePositionEntity(3L);
         }
         employeeService.create(employeeDTO, employeePosition);
+        return "redirect:/employees";
+    }
+
+    @GetMapping("/soft-delete/{id}")
+    public String softDelete(@PathVariable Long id) throws NotFoundException {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        employeeService.softDelete(id, name);
+        return "redirect:/employees/" + id;
+    }
+
+    @GetMapping("/restore/{id}")
+    public String restore(@PathVariable Long id) throws NotFoundException {
+        employeeService.restore(id);
+        return "redirect:/employees/" + id;
+    }
+
+    @GetMapping("/hard-delete/{id}")
+    public String hardDelete(@PathVariable Long id) throws NotFoundException {
+        employeeService.hardDelete(id);
         return "redirect:/employees";
     }
 }

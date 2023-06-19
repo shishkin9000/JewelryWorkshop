@@ -7,13 +7,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
+import ru.hotkto.jewelryworkshop.DTOs.ClientsOrdersSearchDTO;
 import ru.hotkto.jewelryworkshop.services.ClientOrderService;
 import ru.hotkto.jewelryworkshop.services.ClientService;
 import ru.hotkto.jewelryworkshop.services.EmployeeService;
 
 @Controller
-@RequestMapping("/orders")
+@RequestMapping("/clientsOrders")
 public class ClientsOrdersController {
 
     ClientOrderService clientOrderService;
@@ -37,14 +39,14 @@ public class ClientsOrdersController {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC,"id"));
         Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
         model.addAttribute("orders", clientOrderDTOs);
-        return "orders/all";
+        return "clientsOrders/all";
     }
 
     @GetMapping("/add")
     public String addOrder(Model model) {
         model.addAttribute("clients", clientService.getAll());
         model.addAttribute("employees", employeeService.getAll());
-        return "orders/add";
+        return "clientsOrders/add";
     }
 
     @PostMapping("/add")
@@ -54,6 +56,16 @@ public class ClientsOrdersController {
         clientOrderDTO.setClientDTO(clientService.getOne(clientId));
         clientOrderDTO.setEmployeeDTO(employeeService.getOne(employeeId));
         clientOrderService.create(clientOrderDTO);
-        return "redirect:/orders";
+        return "redirect:/clientsOrders";
+    }
+
+    @PostMapping("/search")
+    public String searchOrders(@RequestParam(value = "page", defaultValue = "1") int page,
+                                @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                                @ModelAttribute("orderSearchForm") ClientsOrdersSearchDTO clientsOrdersSearchDTO,
+                                Model model) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC,"full_name"));
+        model.addAttribute("orders", clientOrderService.searchOrders(clientsOrdersSearchDTO, pageRequest));
+        return "clients/all";
     }
 }

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Заказчики</title>
+  <script th:inline="javascript"></script>
+  <style>
+    a {
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+<div layout:fragment="content">
+
+  <hr>
+  <div class="row">
+    <!--                        sec:authorize="isAuthenticated()"-->
+    <a
+
+            href="/clients/add"
+            class="btn btn-lg btn-outline-dark"
+            role="button"
+            style="float: right"
+            aria-disabled="true">Добавить заказчика
+    </a>
+    <hr>
+    <a
+
+            href="/orders/add"
+            class="btn btn-lg btn-outline-dark"
+            role="button"
+            style="float: right"
+            aria-disabled="true">Добавить заказ
+    </a>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-6">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">ФИО</th>
+          <th scope="col">Телефон</th>
+          <!--                <th scope="col">isDeleted?</th>-->
+          <!--                <th scope="col">Update</th>-->
+          <!--                <th scope="col">Restore</th>-->
+          <!--                <th scope="col">SOFT delete</th>-->
+          <!--                <th scope="col">HARD delete</th>-->
+        </tr>
+        </thead>
+        <tr th:each="client : ${clients}">
+          <td>
+            <a class="text-link text-dark-emphasis text-decoration-none" th:href="'/clients/' + ${client.getId()}"
+               th:text="${client.getFullName()}"></a>
+          </td>
+          <td th:text="${client.getPhone()}"></td>
+          <!--                <td th:text="${client.isDeleted()}"></td>-->
+          <!--                <td>-->
+          <!--                    sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->
+          <!--                    <div>-->
+          <!--                        <a class="btn btn-sm btn-outline-success" th:href="'/clients/update/' + ${client.getId()}">Update</a>-->
+          <!--                    </div>-->
+          <!--                </td>-->
+          <!--                <td>-->
+          <!--                    <div>-->
+          <!--                        <a th:if="${client.isDeleted()}"-->
+          <!--                           class="btn btn-sm btn-outline-warning"-->
+          <!--                           th:href="'/clients/restore/' + ${client.getId()}"-->
+          <!--                           onclick="return confirm('The client will be RESTORED')">Restore</a>-->
+          <!--                    </div>-->
+          <!--                </td>-->
+          <!--                <td>-->
+          <!--                    <div>-->
+          <!--                        <a th:if="${!client.isDeleted()}"-->
+          <!--                           class="btn btn-sm btn-outline-danger"-->
+          <!--                           th:href="'/clients/soft-delete/' + ${client.getId()}"-->
+          <!--                           onclick="return confirm('The client will be SOFT DELETED')">SOFT Delete</a>-->
+          <!--                    </div>-->
+          <!--                </td>-->
+          <!--                <td>-->
+          <!--                    <div>-->
+          <!--                        <a th:if="${client.isDeleted()}"-->
+          <!--                           class="btn btn-sm btn-outline-danger"-->
+          <!--                           th:href="'/clients/hard-delete/' + ${client.getId()}"-->
+          <!--                           onclick="return confirm('The client will be HARD!!! DELETED')">HARD Delete</a>-->
+          <!--                    </div>-->
+          <!--                </td>-->
+        </tr>
+      </table>
+    </div>
+    <div class="col"></div>
+    <div>
+      <nav aria-label="Pagination" th:if="${clients.totalPages gt 0}">
+        <ul class="pagination justify-content-center font-weight-bold">
+          <li class="page-item" th:classappend="${clients.number eq 0} ? 'disabled'">
+            <a class="page-link text-black"
+               th:href="@{/clients?page={id}(id=${clients.number lt 2 ? 1 : clients.number})}"
+               aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item" th:classappend="${i eq clients.number + 1} ? 'active'"
+              th:each="i : ${#numbers.sequence( 1, clients.totalPages, 1)}">
+            <a class="page-link text-dark bg-light" th:href="@{/clients?page={id}(id=${i})}" th:text="${i}"
+               th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+          </li>
+          <li class="page-item" th:classappend="${clients.number eq clients.totalPages - 1} ? 'disabled'">
+            <a class="page-link  text-black"
+               th:href="@{/clients?page={id}(id=${clients.number + 2})}"
+               aria-label="Next" title="Next Page" data-toggle="tooltip">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

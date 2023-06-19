@@ -41,22 +41,20 @@ public abstract class GenericService<E extends GenericModel, D extends GenericDT
         return genericMapper.toDTO(genericRepository.save(genericMapper.toEntity(updatedDTO)));
     }
 
-    public D softDelete(final Long id, Employee employee) throws NotFoundException {
+    public D softDelete(final Long id, String deletedBy) throws NotFoundException {
         D objectForDelete = getOne(id);
         objectForDelete.setDeleted(true);
         objectForDelete.setDeletedWhen(LocalDateTime.now());
-        objectForDelete.setDeletedBy(employee.getId() + " " +
-                employee.getEmployeePosition() + " " +
-                employee.getFullName());
-        return objectForDelete;
+        objectForDelete.setDeletedBy(deletedBy);
+        return genericMapper.toDTO(genericRepository.save(genericMapper.toEntity(objectForDelete)));
     }
 
     public D restore(final Long id) throws NotFoundException {
-        D objectForDelete = getOne(id);
-        objectForDelete.setDeleted(false);
-        objectForDelete.setDeletedWhen(null);
-        objectForDelete.setDeletedBy(null);
-        return objectForDelete;
+        D restoredObject = getOne(id);
+        restoredObject.setDeleted(false);
+        restoredObject.setDeletedWhen(null);
+        restoredObject.setDeletedBy(null);
+        return genericMapper.toDTO(genericRepository.save(genericMapper.toEntity(restoredObject)));
     }
 
     public D hardDelete(final Long id) throws NotFoundException {

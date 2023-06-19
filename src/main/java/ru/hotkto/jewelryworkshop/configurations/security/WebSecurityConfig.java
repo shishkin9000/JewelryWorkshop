@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ru.hotkto.jewelryworkshop.services.customUserDetails.CustomUserDetails;
 import ru.hotkto.jewelryworkshop.services.customUserDetails.CustomUserDetailsService;
 
@@ -34,7 +35,13 @@ public class WebSecurityConfig {
                 .loginPage("/login")
                 .defaultSuccessUrl("/")
                 .permitAll())
-                ;
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                );
         return httpSecurity.build();
     }
 

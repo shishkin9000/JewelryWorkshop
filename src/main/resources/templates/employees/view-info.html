@@ -11,11 +11,21 @@
 <form layout:fragment="content">
     <div>
         <h3 th:text="'Информация о сотруднике: ' + ${employee.getFullName()}"></h3>
+        <hr>
         <form class="row g-1">
+            <div class="mb-2 row">
+                <label for="position" class="col-sm-2 col-form-label no-border">Принят на работу:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.getCreatedWhen().format(formatter)}" type="text" readonly
+                       class="form-control-plaintext"
+                       id="createdWhen">
+                </div>
+            </div>
             <div class="mb-2 row">
                 <label for="position" class="col-sm-2 col-form-label no-border">Должность:</label>
                 <div class="col-sm-10">
-                    <p th:text="${employee.getEmployeePosition().getTitle()}" type="text" readonly class="form-control-plaintext"
+                    <p th:text="${employee.getEmployeePosition().getTitle()}" type="text" readonly
+                       class="form-control-plaintext"
                        id="position">
                 </div>
             </div>
@@ -39,40 +49,50 @@
                        id="birthDate">
                 </div>
             </div>
-            <hr class="hr"/>
-            <div class="mt-2">
-                <a class="text-link text-dark-emphasis text-decoration-none hover-blue"
-                   th:href="'/employees/' + ${employee.getId()}"
-                   th:text="${employee.getFullName()}"></a>
-                <a class="text-link text-dark-emphasis text-decoration-none hover-blue"
-                   th:href="'/employees/' + ${employee.getId()}"
-                   th:text="${employee.getFullName()}"></a>
-                <a class="text-link text-dark-emphasis text-decoration-none hover-blue"
-                   th:href="'/employees/' + ${employee.getId()}"
-                   th:text="${employee.getFullName()}"></a>
-                <div class="mt-2">
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Back</button>
+            <div class="mb-2 row">
+                <label for="address" class="col-sm-2 col-form-label no-border">Действующий:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.isDeleted() ? 'Нет' : 'Да'}" type="text" readonly class="form-control-plaintext"
+                       id="isDeleted">
                 </div>
-                <div class="mt-2">
-                    <a class="btn btn-lg btn-outline-dark"
-                       th:href="'/orders/' + ${e.getId()}"
-                       onclick="return confirm('The film will be HARD! DELETED')">HARD Delete</a>
-                </div>
-                <div class="mt-2">
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Back</button>
-                </div>
-<!--                <a-->
-
-<!--                        href="/employees"-->
-<!--                        class="btn btn-lg btn-outline-dark"-->
-<!--                        role="button"-->
-<!--                        style="float: right"-->
-<!--                        aria-disabled="true">Добавить заказ-->
-<!--                </a>-->
             </div>
-            <!--      private List<ClientOrder> clientOrders;-->
-            <!--      private List<FinishedItem> finishedItems;-->
-
+            <div class="mb-2 row" th:if="${employee.isDeleted()}">
+                <label for="address" class="col-sm-2 col-form-label no-border">Удалил:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.getDeletedBy()}" type="text" readonly class="form-control-plaintext"
+                       id="deletedBy">
+                </div>
+            </div>
+            <div class="mb-2 row" th:if="${employee.isDeleted()}">
+                <label for="address" class="col-sm-2 col-form-label no-border">Дата удаления:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.getDeletedWhen().format(formatter)}" type="text" readonly class="form-control-plaintext"
+                       id="deletedWhen">
+                </div>
+            </div>
+            <hr class="hr"/>
+            <div class="row">
+                <a class="btn btn-secondary"
+                   th:href="'/employees'">Назад</a>
+            </div>
+            <div class="row">
+                <a class="btn btn-warning margin-top-5px"
+                   th:if="${employee.isDeleted()}"
+                   th:href="'/employees/restore/' + ${employee.getId()}">Восстановить</a>
+            </div>
+            <div class="row">
+                <a class="btn btn-warning text-color-white margin-top-5px"
+                   th:if="${!employee.isDeleted()}"
+                   th:href="'/employees/soft-delete/' + ${employee.getId()}"
+                   onclick="return confirm('Сотрудник будет помечен в базе флагом \'isDeleted()\'')">Удалить</a>
+            </div>
+            <div class="row">
+                <a class="btn btn-danger margin-top-5px"
+                   sec:authorize="isAuthenticated() && (hasRole('DIRECTOR') || hasRole('ADMIN'))"
+                   th:if="${employee.isDeleted()}"
+                   th:href="'/employees/hard-delete/' + ${employee.getId()}"
+                   onclick="return confirm('Сотрудник будет НАВСЕГДА! удален из базы')">Удалить НАВСЕГДА</a>
+            </div>
         </form>
     </div>
 </form>

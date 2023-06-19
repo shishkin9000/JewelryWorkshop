@@ -21,14 +21,14 @@
             <div class="mt-0 row g-2">
                 <div class="col-md">
                     <div class="form-floating">
-                        <input name="clientsName" type="text" class="form-control" id="clientsName" placeholder="clientsPhone">
-                        <label for="clientsName">ФИО</label>
+                        <input name="fullName" type="text" class="form-control" id="fullName" placeholder="fullName">
+                        <label for="fullName">ФИО</label>
                     </div>
                 </div>
                 <div class="col-md">
                     <div class="form-floating">
-                        <input name="clientsPhone" type="text" class="form-control" id="clientsPhone" placeholder="clientsPhone">
-                        <label for="clientsPhone">Телефон</label>
+                        <input name="phone" type="text" class="form-control" id="phone" placeholder="phone">
+                        <label for="phone">Телефон</label>
                     </div>
                 </div>
                 <div class="row g-2">
@@ -42,7 +42,7 @@
         <!--                        sec:authorize="isAuthenticated()"-->
         <a
 
-                href="clients/add"
+                href="/clients/add"
                 class="btn btn-lg btn-outline-dark"
                 role="button"
                 style="float: right"
@@ -51,7 +51,7 @@
         <hr>
         <a
 
-                href="orders/add"
+                href="/orders/add"
                 class="btn btn-lg btn-outline-dark"
                 role="button"
                 style="float: right"
@@ -75,7 +75,7 @@
             </thead>
             <tr th:each="client : ${clients}">
                 <td>
-                    <a class="text-link text-dark-emphasis text-decoration-none" th:href="'/directors/' + ${client.getId()}"
+                    <a class="text-link text-dark-emphasis text-decoration-none" th:href="'/clients/' + ${client.getId()}"
                        th:text="${client.getFullName()}"></a>
                 </td>
                 <td th:text="${client.getPhone()}"></td>
