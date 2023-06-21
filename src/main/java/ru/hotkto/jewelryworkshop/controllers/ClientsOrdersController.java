@@ -7,12 +7,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
-import ru.hotkto.jewelryworkshop.DTOs.ClientsOrdersSearchDTO;
+import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
 import ru.hotkto.jewelryworkshop.services.ClientOrderService;
 import ru.hotkto.jewelryworkshop.services.ClientService;
 import ru.hotkto.jewelryworkshop.services.EmployeeService;
+
+import java.time.format.DateTimeFormatter;
 
 @Controller
 @RequestMapping("/clientsOrders")
@@ -36,9 +37,11 @@ public class ClientsOrdersController {
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
             Model model
     ) {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC,"id"));
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
         Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         model.addAttribute("orders", clientOrderDTOs);
+        model.addAttribute("formatter", formatter);
         return "clientsOrders/all";
     }
 
@@ -61,11 +64,21 @@ public class ClientsOrdersController {
 
     @PostMapping("/search")
     public String searchOrders(@RequestParam(value = "page", defaultValue = "1") int page,
-                                @RequestParam(value = "size", defaultValue = "10") int pageSize,
-                                @ModelAttribute("orderSearchForm") ClientsOrdersSearchDTO clientsOrdersSearchDTO,
-                                Model model) {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC,"full_name"));
-        model.addAttribute("orders", clientOrderService.searchOrders(clientsOrdersSearchDTO, pageRequest));
-        return "clients/all";
+                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                               @ModelAttribute("orderSearchForm") ClientOrderSearchDTO clientOrderSearchDTO,
+                               Model model) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC, "created_by"));
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        model.addAttribute("formatter", formatter);
+        if (clientOrderSearchDTO.getOrderCreationDate() == null) {
+            pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
+            Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
+            model.addAttribute("orders", clientOrderDTOs);
+            return "clientsOrders/all";
+        }
+
+        model.addAttribute("orders", clientOrderService.searchOrders(clientOrderSearchDTO, pageRequest));
+
+        return "clientsOrders/all";
     }
 }

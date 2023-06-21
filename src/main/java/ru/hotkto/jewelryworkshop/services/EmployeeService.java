@@ -3,18 +3,22 @@ package ru.hotkto.jewelryworkshop.services;
 import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
+import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
 import ru.hotkto.jewelryworkshop.mappers.EmployeeMapper;
 import ru.hotkto.jewelryworkshop.models.Client;
+import ru.hotkto.jewelryworkshop.models.ClientOrder;
 import ru.hotkto.jewelryworkshop.models.Employee;
 import ru.hotkto.jewelryworkshop.models.EmployeePosition;
 import ru.hotkto.jewelryworkshop.repositories.EmployeesRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -46,4 +50,14 @@ public class EmployeeService extends GenericService<Employee, EmployeeDTO> {
     }
 
 
+    public Page<EmployeeDTO> searchEmployees(EmployeeDTO employeeDTO, Pageable pageable) {
+        Page<Employee> employeesPaginated = employeesRepository.searchEmployees(
+                employeeDTO.getFullName(),
+                employeeDTO.getPhone(),
+                pageable
+        );
+
+        List<EmployeeDTO> clientDTOList = genericMapper.toDTOs(employeesPaginated.getContent());
+        return new PageImpl<>(clientDTOList, pageable, employeesPaginated.getTotalElements());
+    }
 }

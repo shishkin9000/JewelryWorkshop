@@ -5,14 +5,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
-import ru.hotkto.jewelryworkshop.DTOs.ClientsOrdersSearchDTO;
+import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
 import ru.hotkto.jewelryworkshop.mappers.ClientOrderMapper;
-import ru.hotkto.jewelryworkshop.models.Client;
 import ru.hotkto.jewelryworkshop.models.ClientOrder;
 import ru.hotkto.jewelryworkshop.repositories.ClientOrdersRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,14 +38,10 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
         return genericMapper.toDTO(clientOrdersRepository.save(genericMapper.toEntity(newObject)));
     }
 
-    public Page<ClientOrderDTO> searchOrders(ClientsOrdersSearchDTO clientsOrdersSearchDTO, Pageable pageable) {
-        String employeeName = clientsOrdersSearchDTO.getEmployeeName();
-        String clientName = clientsOrdersSearchDTO.getClientName();
-        Boolean isCompleted = clientsOrdersSearchDTO.getIsCompleted();
+    public Page<ClientOrderDTO> searchOrders(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {
+        LocalDate orderCreationDate = clientOrderSearchDTO.getOrderCreationDate();
         Page<ClientOrder> ordersPaginated = clientOrdersRepository.searchOrders(
-                employeeName,
-                clientName,
-                isCompleted,
+                orderCreationDate,
                 pageable
         );
 

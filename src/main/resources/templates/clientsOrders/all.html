@@ -17,40 +17,20 @@
 <body>
 <div layout:fragment="content">
     <div>
-        <form method="POST" th:action="@{/templates/clientsOrders/search}" th:object="${clientOrderSearchForm}">
+        <form method="POST" th:action="@{/clientsOrders/search}" th:object="${clientOrderSearchForm}">
             <div class="mt-0 row g-2">
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="clientsName" type="text" class="form-control" id="clientsName"
-                               placeholder="clientsPhone">
-                        <label for="clientsName">ФИО заказчика</label>
+                    <div class="col-md"></div>
+                    <div class="col-md">
+                        <div class="form-floating">
+                            <input name="orderCreationDate" type="date" class="form-control" id="orderCreationDate"
+                                   placeholder="orderCreationDate">
+                            <label for="orderCreationDate">Дата заказа</label>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="clientsPhone" type="text" class="form-control" id="clientsPhone"
-                               placeholder="clientsPhone">
-                        <label for="clientsPhone">ФИО работника</label>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="clientsPhone" type="text" class="form-control" id="clientsPhone"
-                               placeholder="clientsPhone">
-                        <label for="clientsPhone">Дата заказа</label>
-                    </div>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="clientsPhone" type="text" class="form-control" id="clientsPhone"
-                               placeholder="clientsPhone">
-                        <label for="clientsPhone">Дата заказа</label>
-                    </div>
-                </div>
-                <div class="row g-2">
-                    <button type="submit" class="btn gold-background text-color-white">Поиск</button>
-                </div>
+                <div class="col-md"></div>
+                <button type="submit" class="btn gold-background text-color-white">Поиск</button>
             </div>
+
         </form>
     </div>
     <hr>
@@ -67,7 +47,7 @@
         <hr>
         <a
 
-                href="orders/add"
+                href="clientsOrders/add"
                 class="btn btn-lg btn-outline-dark"
                 role="button"
                 style="float: right"
@@ -79,6 +59,7 @@
             <thead>
             <tr>
                 <th scope="col">ID</th>
+                <th scope="col">Создан</th>
                 <th scope="col">Описание</th>
                 <th scope="col">Выполнить до</th>
                 <th scope="col">Цена</th>
@@ -98,6 +79,7 @@
                        th:href="'/orders/' + ${order.getId()}"
                        th:text="${order.getId()}"></a>
                 </td>
+                <td th:text="${order.createdWhen.format(formatter)}"></td>
                 <td th:text="${order.getDescription()}"></td>
                 <td th:text="${order.getDeadline()}"></td>
                 <td th:text="${order.getPrice()}"></td>
@@ -143,19 +125,20 @@
             <ul class="pagination justify-content-center font-weight-bold">
                 <li class="page-item" th:classappend="${orders.number eq 0} ? 'disabled'">
                     <a class="page-link text-black"
-                       th:href="@{/templates/clientsOrders?page={id}(id=${orders.number lt 2 ? 1 : orders.number})}"
+                       th:href="@{/clientsOrders?page={id}(id=${orders.number lt 2 ? 1 : orders.number})}"
                        aria-label="Previous" title="Previous Page" data-toggle="tooltip">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
                 <li class="page-item" th:classappend="${i eq orders.number + 1} ? 'active'"
                     th:each="i : ${#numbers.sequence( 1, orders.totalPages, 1)}">
-                    <a class="page-link text-dark bg-light" th:href="@{/templates/clientsOrders?page={id}(id=${i})}" th:text="${i}"
+                    <a class="page-link text-dark bg-light" th:href="@{/clientsOrders?page={id}(id=${i})}"
+                       th:text="${i}"
                        th:title="${'Page '+ i}" data-toggle="tooltip"></a>
                 </li>
                 <li class="page-item" th:classappend="${orders.number eq orders.totalPages - 1} ? 'disabled'">
                     <a class="page-link  text-black"
-                       th:href="@{/templates/clientsOrders?page={id}(id=${orders.number + 2})}"
+                       th:href="@{/clientsOrders?page={id}(id=${orders.number + 2})}"
                        aria-label="Next" title="Next Page" data-toggle="tooltip">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

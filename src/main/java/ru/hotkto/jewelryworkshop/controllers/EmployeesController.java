@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
 import ru.hotkto.jewelryworkshop.models.EmployeePosition;
 import ru.hotkto.jewelryworkshop.services.EmployeeService;
@@ -35,6 +36,16 @@ public class EmployeesController {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC,"fullName"));
         Page<EmployeeDTO> employeeDTOS = employeeService.getAll(pageRequest);
         model.addAttribute("employees", employeeDTOS);
+        return "employees/all";
+    }
+
+    @PostMapping("/search")
+    public String searchEmployee(@RequestParam(value = "page", defaultValue = "1") int page,
+                                @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                                @ModelAttribute("employeeSearchForm") EmployeeDTO employeeDTO,
+                                Model model) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC,"full_name"));
+        model.addAttribute("employees", employeeService.searchEmployees(employeeDTO, pageRequest));
         return "employees/all";
     }
 
