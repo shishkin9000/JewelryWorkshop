@@ -20,4 +20,12 @@ public interface ClientOrdersRepository extends GenericRepository<ClientOrder> {
             """)
     Page<ClientOrder> searchOrders(@Param(value = "orderCreationDate") LocalDate orderCreationDate,
                                    Pageable pageable);
+
+    @Query(nativeQuery = true,
+            value = """
+        select * from clients_orders co
+        where co.status = 'свободен'
+            """)
+    Page<ClientOrder> searchLooseOrders(Pageable pageable);
+
 }

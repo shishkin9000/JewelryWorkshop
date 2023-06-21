@@ -33,6 +33,12 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
         return new PageImpl<>(clientOrderDTOList, pageable, clientsOrdersPage.getTotalElements());
     }
 
+    public Page<ClientOrderDTO> getAllLoose(Pageable pageable) {
+        Page<ClientOrder> clientsOrdersPage =  clientOrdersRepository.searchLooseOrders(pageable);
+        List<ClientOrderDTO> clientOrderDTOList = genericMapper.toDTOs(clientsOrdersPage.getContent());
+        return new PageImpl<>(clientOrderDTOList, pageable, clientsOrdersPage.getTotalElements());
+    }
+
     @Override
     public ClientOrderDTO create(final ClientOrderDTO newObject) {
         newObject.setCreatedWhen(LocalDateTime.now());

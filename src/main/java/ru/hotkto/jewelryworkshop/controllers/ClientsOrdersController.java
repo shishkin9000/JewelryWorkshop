@@ -39,13 +39,22 @@ public class ClientsOrdersController {
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
             Model model
-    ) {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
-        Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
+    ) throws NotFoundException {
+        PageRequest pageRequest;
+        CustomUserDetails customUserDetails = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long employeeId = Long.valueOf(customUserDetails.getUserId());
+        String role = employeeService.getOne(employeeId).getEmployeePosition().getRole();
+        Page<ClientOrderDTO> clientOrderDTOs;
+        if (role.equals("USER")){
+            pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "created_when"));
+            clientOrderDTOs = clientOrderService.getAllLoose(pageRequest);
+        } else {
+            pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
+            clientOrderDTOs = clientOrderService.getAll(pageRequest);
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         model.addAttribute("orders", clientOrderDTOs);
         model.addAttribute("formatter", formatter);
-        model.addAttribute("employeeId", ((CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId());
         return "clientsOrders/all";
     }
 
@@ -64,9 +73,10 @@ public class ClientsOrdersController {
         return "redirect:/clientsOrders";
     }
 
-    @PostMapping("/take/{employeeId}{clientOrderId}")
-    public String takeOrder(@PathVariable Long employeeId,
-                            @PathVariable final Long clientOrderId) throws NotFoundException {
+    @GetMapping("/take/{clientOrderId}")
+    public String takeOrder(@PathVariable Long clientOrderId) throws NotFoundException {
+        CustomUserDetails customUserDetails = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long employeeId = Long.valueOf(customUserDetails.getUserId());
         EmployeeDTO employeeDTO = employeeService.getOne(employeeId);
         ClientOrderDTO clientOrderDTO = clientOrderService.getOne(clientOrderId);
         clientOrderService.take(employeeDTO, clientOrderDTO);

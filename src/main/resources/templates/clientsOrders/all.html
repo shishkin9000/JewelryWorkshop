@@ -94,7 +94,7 @@
                 <td>
                     <div sec:authorize="isAuthenticated() && hasRole('USER')">
                         <a class="btn btn-sm btn-outline-danger"
-                           th:href="'/clientOrders/take?employeeId=' + ${employeeId} + '&clientOrderId=' + ${order.getId()}"
+                           th:href="'clientsOrders/take/'+ ${order.getId()}"
                            onclick="return confirm('Взять заказ?')">Взять заказ</a>
                     </div>
                 </td>
