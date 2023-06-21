@@ -33,6 +33,9 @@ public class ClientOrder extends GenericModel {
     @Column(name = "price")
     private Integer price;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "client_id",
                 nullable = false,

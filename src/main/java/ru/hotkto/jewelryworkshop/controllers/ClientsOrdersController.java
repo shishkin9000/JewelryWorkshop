@@ -4,14 +4,17 @@ import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
+import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
 import ru.hotkto.jewelryworkshop.services.ClientOrderService;
 import ru.hotkto.jewelryworkshop.services.ClientService;
 import ru.hotkto.jewelryworkshop.services.EmployeeService;
+import ru.hotkto.jewelryworkshop.services.customUserDetails.CustomUserDetails;
 
 import java.time.format.DateTimeFormatter;
 
@@ -42,6 +45,7 @@ public class ClientsOrdersController {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         model.addAttribute("orders", clientOrderDTOs);
         model.addAttribute("formatter", formatter);
+        model.addAttribute("employeeId", ((CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUserId());
         return "clientsOrders/all";
     }
 
@@ -54,11 +58,18 @@ public class ClientsOrdersController {
 
     @PostMapping("/add")
     public String create(@ModelAttribute("orderForm") ClientOrderDTO clientOrderDTO,
-                         @RequestParam("clientId") Long clientId,
-                         @RequestParam("employeeId") Long employeeId) throws NotFoundException {
+                         @RequestParam("clientId") Long clientId) throws NotFoundException {
         clientOrderDTO.setClientDTO(clientService.getOne(clientId));
-        clientOrderDTO.setEmployeeDTO(employeeService.getOne(employeeId));
         clientOrderService.create(clientOrderDTO);
+        return "redirect:/clientsOrders";
+    }
+
+    @PostMapping("/take/{employeeId}{clientOrderId}")
+    public String takeOrder(@PathVariable Long employeeId,
+                            @PathVariable final Long clientOrderId) throws NotFoundException {
+        EmployeeDTO employeeDTO = employeeService.getOne(employeeId);
+        ClientOrderDTO clientOrderDTO = clientOrderService.getOne(clientOrderId);
+        clientOrderService.take(employeeDTO, clientOrderDTO);
         return "redirect:/clientsOrders";
     }
 

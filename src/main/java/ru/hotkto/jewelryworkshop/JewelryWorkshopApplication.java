@@ -22,11 +22,7 @@ import java.util.Scanner;
 public class JewelryWorkshopApplication implements CommandLineRunner {
 
     @Autowired
-    EmployeesRepository employeesRepository;
-    @Autowired
-    EmployeesPositionsService positionsService;
-    @Autowired
-    EmployeesPositionsMapper employeesPositionsMapper;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public static void main(String[] args) {
         SpringApplication.run(JewelryWorkshopApplication.class, args);
@@ -34,20 +30,6 @@ public class JewelryWorkshopApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        System.out.println("Start test");
-//        EmployeePosition employeePosition = employeesPositionsMapper.toEntity(positionsService.getOne(1L));
-//        Employee employee = new Employee(
-//                "loh",
-//                "loh",
-//                "loh",
-//                "loh",
-//                "loh",
-//                LocalDate.of(1900,1,1),
-//                employeePosition,
-//                null,
-//                null
-//        );
-//        employeesRepository.save(employee);
-//        System.out.println("success");
+        System.out.println("Jeweller - username: lil , password \"lil\": " + bCryptPasswordEncoder.encode("lil"));
     }
 }

@@ -27,6 +27,15 @@
                     <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
                         <a class="color-white" aria-current="page" href="/employees">Сотрудники</a>
                     </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
+                        <a class="color-white" aria-current="page" href="/gems">Камни</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
+                        <a class="color-white" aria-current="page" href="/metals">Металлы</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
+                        <a class="color-white" aria-current="page" href="/finished-items">Готовые изделия</a>
+                    </li>
                 </ul>
                 <form class="d-flex" sec:authorize="!isAuthenticated()">
                     <a href="/login" class="btn btn-light btn-outline-dark" role="button" aria-disabled="true">Войти</a>

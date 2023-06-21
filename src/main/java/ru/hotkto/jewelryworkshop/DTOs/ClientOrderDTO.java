@@ -20,6 +20,7 @@ public class ClientOrderDTO extends GenericDTO{
     private boolean isCompleted;
     private LocalDateTime completedWhen;
     private Integer price;
+    private String status;
     private ClientDTO clientDTO;
     private EmployeeDTO employeeDTO;
 }

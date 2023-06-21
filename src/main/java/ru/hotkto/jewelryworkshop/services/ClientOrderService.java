@@ -7,6 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
+import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
+import ru.hotkto.jewelryworkshop.constants.ClientOrderStatusConstants;
 import ru.hotkto.jewelryworkshop.mappers.ClientOrderMapper;
 import ru.hotkto.jewelryworkshop.models.ClientOrder;
 import ru.hotkto.jewelryworkshop.repositories.ClientOrdersRepository;
@@ -35,7 +37,14 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
     public ClientOrderDTO create(final ClientOrderDTO newObject) {
         newObject.setCreatedWhen(LocalDateTime.now());
         newObject.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+        newObject.setStatus(ClientOrderStatusConstants.LOOSE);
         return genericMapper.toDTO(clientOrdersRepository.save(genericMapper.toEntity(newObject)));
+    }
+
+    public ClientOrderDTO take(EmployeeDTO employeeDTO, ClientOrderDTO clientOrderDTO) {
+        clientOrderDTO.setEmployeeDTO(employeeDTO);
+        clientOrderDTO.setStatus(ClientOrderStatusConstants.IN_WORK);
+        return genericMapper.toDTO(clientOrdersRepository.save(genericMapper.toEntity(clientOrderDTO)));
     }
 
     public Page<ClientOrderDTO> searchOrders(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {

@@ -41,7 +41,7 @@
     <div class="row">
         <!--                        sec:authorize="isAuthenticated()"-->
         <a
-
+                sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                 href="/clients/add"
                 class="btn btn-lg btn-outline-dark"
                 role="button"
@@ -50,7 +50,7 @@
         </a>
         <hr>
         <a
-
+                sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                 href="/clientsOrders/add"
                 class="btn btn-lg btn-outline-dark"
                 role="button"

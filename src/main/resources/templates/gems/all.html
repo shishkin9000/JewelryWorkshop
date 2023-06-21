@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Камни</title>
+    <script th:inline="javascript"></script>
+    <style>
+        a {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div>
+        <form method="POST" th:action="@{/gems/search}" th:object="${gemSearchForm}">
+            <div class="mt-0 row g-2">
+                <div class="col-md"></div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="orderCreationDate" type="date" class="form-control" id="orderCreationDate"
+                               placeholder="orderCreationDate">
+                        <label for="orderCreationDate">Название</label>
+                    </div>
+                </div>
+                <div class="col-md"></div>
+                <button type="submit" class="btn gold-background text-color-white">Поиск</button>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="row">
+        <a
+                href="gems/add"
+                class="btn btn-lg btn-outline-dark"
+                role="button"
+                style="float: right"
+                aria-disabled="true">Добавить камень
+        </a>
+    </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Название</th>
+                    <th scope="col">Вес, карат</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tr th:each="gem : ${gems}">
+                    <td></td>
+                    <td th:text="${gem.getId()}"></td>
+                    <td th:text="${gem.getTitle()}"></td>
+                    <td th:text="${gem.getCaratWeight()}"></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="col"></div>
+    </div>
+    <div>
+        <nav aria-label="Pagination" th:if="${gems.totalPages gt 0}">
+            <ul class="pagination justify-content-center font-weight-bold">
+                <li class="page-item" th:classappend="${gems.number eq 0} ? 'disabled'">
+                    <a class="page-link text-black"
+                       th:href="@{/gems?page={id}(id=${gems.number lt 2 ? 1 : gems.number})}"
+                       aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${i eq gems.number + 1} ? 'active'"
+                    th:each="i : ${#numbers.sequence( 1, gems.totalPages, 1)}">
+                    <a class="page-link text-dark bg-light" th:href="@{/gems?page={id}(id=${i})}"
+                       th:text="${i}"
+                       th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                </li>
+                <li class="page-item" th:classappend="${gems.number eq gems.totalPages - 1} ? 'disabled'">
+                    <a class="page-link  text-black"
+                       th:href="@{/gems?page={id}(id=${gems.number + 2})}"
+                       aria-label="Next" title="Next Page" data-toggle="tooltip">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

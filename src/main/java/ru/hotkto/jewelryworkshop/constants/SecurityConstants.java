@@ -1,4 +1,4 @@
-package ru.hotkto.jewelryworkshop.configurations;
+package ru.hotkto.jewelryworkshop.constants;
 
 import java.util.List;
 
