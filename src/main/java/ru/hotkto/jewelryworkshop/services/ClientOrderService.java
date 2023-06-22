@@ -1,5 +1,6 @@
 package ru.hotkto.jewelryworkshop.services;
 
+import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,13 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
         return new PageImpl<>(clientOrderDTOList, pageable, clientsOrdersPage.getTotalElements());
     }
 
+    public Page<ClientOrderDTO> getMyOrders(EmployeeDTO employeeDTO, Pageable pageable) {
+        Long employeeId = employeeDTO.getId();
+        Page<ClientOrder> clientsOrdersPage =  clientOrdersRepository.getMyOrders(employeeId, pageable);
+        List<ClientOrderDTO> clientOrderDTOList = genericMapper.toDTOs(clientsOrdersPage.getContent());
+        return new PageImpl<>(clientOrderDTOList, pageable, clientsOrdersPage.getTotalElements());
+    }
+
     @Override
     public ClientOrderDTO create(final ClientOrderDTO newObject) {
         newObject.setCreatedWhen(LocalDateTime.now());
@@ -51,6 +59,13 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
         clientOrderDTO.setEmployeeDTO(employeeDTO);
         clientOrderDTO.setStatus(ClientOrderStatusConstants.IN_WORK);
         return genericMapper.toDTO(clientOrdersRepository.save(genericMapper.toEntity(clientOrderDTO)));
+    }
+
+    public ClientOrderDTO complete(Long clientOrderId) throws NotFoundException {
+        ClientOrder clientOrder = clientOrdersRepository
+                .findById(clientOrderId).orElseThrow(() -> new NotFoundException("Заказ № " + clientOrderId + " не найден"));
+        clientOrder.setStatus(ClientOrderStatusConstants.DONE);
+        return genericMapper.toDTO(clientOrdersRepository.save(clientOrder));
     }
 
     public Page<ClientOrderDTO> searchOrders(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {

@@ -41,7 +41,6 @@ public class ClientOrderMapper extends GenericMapper<ClientOrder, ClientOrderDTO
                 .addMappings(mapping -> {
                     mapping.skip(ClientOrderDTO::setClientDTO);
                     mapping.skip(ClientOrderDTO::setEmployeeDTO);
-
                 }).setPostConverter(toDTOConverter());
 
         modelMapper.createTypeMap(ClientOrderDTO.class, ClientOrder.class)

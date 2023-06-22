@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 public class ClientOrderDTO extends GenericDTO{
     private String description;
     private LocalDate deadline;
-    private boolean isCompleted;
     private LocalDateTime completedWhen;
     private Integer price;
     private String status;

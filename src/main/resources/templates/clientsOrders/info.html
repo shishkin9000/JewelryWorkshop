@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>О заказе</title>
+</head>
+<body>
+<form layout:fragment="content">
+  <div>
+    <h3 th:text="'Информация о заказе: ' + ${order.getId()}"></h3>
+    <form class="row g-1">
+      <div class="mb-2 row">
+        <label for="status" class="col-sm-2 col-form-label no-border">Состояние</label>
+        <div class="col-sm-10">
+          <p th:text="${order.getStatus()}" type="text" readonly class="form-control-plaintext" id="status">
+        </div>
+      </div>
+      <div class="mb-2 row">
+        <label for="description" class="col-sm-2 col-form-label no-border">Описание</label>
+        <div class="col-sm-10">
+          <p th:text="${order.getDescription()}" type="text" readonly class="form-control-plaintext" id="description">
+        </div>
+      </div>
+      <div class="mb-2 row">
+        <label for="price" class="col-sm-2 col-form-label">Цена</label>
+        <div class="col-sm-10">
+          <p th:text="${order.getPrice()}" class="form-control-plaintext" id="price">
+        </div>
+      </div>
+      <div class="mb-2 row">
+        <label for="deadline" class="col-sm-2 col-form-label">Выполнить до</label>
+        <div class="col-sm-10">
+          <p th:text="${order.getDeadline()}"
+             th:classappend="${order.getDeadline() >= now} ? 'red-text'"
+             class="form-control-plaintext" id="deadline">
+        </div>
+      </div>
+      </form>
+      <hr class="hr"/>
+      <div class="mt-2">
+        <button type="button" class="btn btn-secondary" onclick="window.history.back()">Back</button>
+      </div>
+  </div>
+</form>
+</body>
+</html>

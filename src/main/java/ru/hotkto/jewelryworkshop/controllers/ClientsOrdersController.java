@@ -4,6 +4,7 @@ import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
+import ru.hotkto.jewelryworkshop.constants.ClientOrderStatusConstants;
 import ru.hotkto.jewelryworkshop.services.ClientOrderService;
 import ru.hotkto.jewelryworkshop.services.ClientService;
 import ru.hotkto.jewelryworkshop.services.EmployeeService;
 import ru.hotkto.jewelryworkshop.services.customUserDetails.CustomUserDetails;
+import ru.hotkto.jewelryworkshop.utils.ContextUserTaker;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller
@@ -40,22 +44,41 @@ public class ClientsOrdersController {
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
             Model model
     ) throws NotFoundException {
-        PageRequest pageRequest;
-        CustomUserDetails customUserDetails = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long employeeId = Long.valueOf(customUserDetails.getUserId());
-        String role = employeeService.getOne(employeeId).getEmployeePosition().getRole();
-        Page<ClientOrderDTO> clientOrderDTOs;
-        if (role.equals("USER")){
-            pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "created_when"));
-            clientOrderDTOs = clientOrderService.getAllLoose(pageRequest);
-        } else {
-            pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
-            clientOrderDTOs = clientOrderService.getAll(pageRequest);
-        }
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));;
+        Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         model.addAttribute("orders", clientOrderDTOs);
         model.addAttribute("formatter", formatter);
         return "clientsOrders/all";
+    }
+
+    @GetMapping("my-orders")
+    public String getMyOrders(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "size", defaultValue = "10") int pageSize,
+            Model model
+    ) throws NotFoundException {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "created_when"));
+        EmployeeDTO employeeDTO = ContextUserTaker.getContextUser(employeeService, SecurityContextHolder.getContext());
+        Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getMyOrders(employeeDTO, pageRequest);
+//        model.addAttribute("inWork", ClientOrderStatusConstants.IN_WORK);
+        model.addAttribute("orders", clientOrderDTOs);
+        return "employees/my-orders";
+    }
+
+    @GetMapping("/{id}")
+    public String getInfo(@PathVariable Long id, Model model) throws NotFoundException {
+        ClientOrderDTO clientOrderDTO = clientOrderService.getOne(id);
+        LocalDate now = LocalDate.now();
+        model.addAttribute("order", clientOrderDTO);
+        model.addAttribute("now", now);
+        return "clientsOrders/info";
+    }
+
+    @GetMapping("complete/{id}")
+    public String completeOrder(@PathVariable Long id, Model model) throws NotFoundException {
+        clientOrderService.complete(id);
+        return "redirect:/clientsOrders";
     }
 
     @GetMapping("/add")
@@ -102,4 +125,6 @@ public class ClientsOrdersController {
 
         return "clientsOrders/all";
     }
+
+
 }

@@ -131,7 +131,7 @@ create table finished_items_gems_types
     constraint fk_gem_type_id foreign key (gem_type_id) references gems_types (id)
 );
 
-
+alter table finished_items add constraint fk_finished_item_employee foreign key (employee_id) references employees (id)
 
 
 

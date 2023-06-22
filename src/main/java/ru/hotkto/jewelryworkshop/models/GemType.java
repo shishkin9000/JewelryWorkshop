@@ -20,9 +20,6 @@ public class GemType extends GenericModel{
     @Column(name = "title")
     private String title;
 
-    @Column(name = "carat_weight")
-    private Double caratWeight;
-
     @ManyToMany
     @JoinTable(
             name = "finished_items_gems_types",

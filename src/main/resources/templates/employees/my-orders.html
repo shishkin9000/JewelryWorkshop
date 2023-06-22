@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои заказы</title>
+    <script th:inline="javascript"></script>
+    <style>
+        a {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <div>
+        <form method="POST" th:action="@{/employees/search}" th:object="${employeeSearchForm}">
+            <div class="mt-0 row g-2">
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="fullName" type="text" class="form-control" id="fullName"
+                               placeholder="fullName">
+                        <label for="fullName">Написать код</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <input name="phone" type="text" class="form-control" id="phone"
+                               placeholder="phone">
+                        <label for="phone">Написать код</label>
+                    </div>
+                </div>
+                <div class="row g-2">
+                    <button type="submit" class="btn gold-background text-color-white">Написать код</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr>
+    <div class="row">
+    </div>
+    <div class="row">
+        <!--        <div class="col"></div>-->
+        <!--        <div class="col-6">-->
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">№</th>
+                <th scope="col">Описание</th>
+                <th scope="col">Цена</th>
+                <th scope="col">Выполнить до</th>
+                <th scope="col">Состояние</th>
+                <th scope="col">Подробно</th>
+                <th scope="col">Завершить</th>
+            </tr>
+            </thead>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.getId()}"></td>
+                <td th:text="${order.getDescription()}"></td>
+                <td th:text="${order.getPrice()}"></td>
+                <td th:text="${order.getDeadline()}"></td>
+                <td th:text="${order.getStatus()}"></td>
+                <td>
+                    <div>
+                        <a class="btn btn-sm btn-outline-success"
+                           th:href="'/clientsOrders/'+ ${order.getId()}">Подробно</a>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <a th:if="${order.getStatus() == 'в работе'}"
+                           class="btn btn-sm btn-outline-warning"
+                           th:href="'/clientsOrders/complete/'+ ${order.getId()}"
+                           onclick="return confirm('Завершить заказ?')">Завершить</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <nav aria-label="Pagination" th:if="${orders.totalPages gt 0}">
+            <ul class="pagination justify-content-center font-weight-bold">
+                <li class="page-item" th:classappend="${orders.number eq 0} ? 'disabled'">
+                    <a class="page-link text-black"
+                       th:href="@{/orders?page={id}(id=${orders.number lt 2 ? 1 : orders.number})}"
+                       aria-label="Previous" title="Previous Page" data-toggle="tooltip">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item" th:classappend="${i eq orders.number + 1} ? 'active'"
+                    th:each="i : ${#numbers.sequence( 1, orders.totalPages, 1)}">
+                    <a class="page-link text-dark bg-light" th:href="@{/orders?page={id}(id=${i})}" th:text="${i}"
+                       th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                </li>
+                <li class="page-item" th:classappend="${orders.number eq orders.totalPages - 1} ? 'disabled'">
+                    <a class="page-link  text-black"
+                       th:href="@{/orders?page={id}(id=${orders.number + 2})}"
+                       aria-label="Next" title="Next Page" data-toggle="tooltip">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+</div>
+<!--</div>-->
+</body>
+</html>

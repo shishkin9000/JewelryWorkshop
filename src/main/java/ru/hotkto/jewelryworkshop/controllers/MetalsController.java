@@ -8,17 +8,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.hotkto.jewelryworkshop.DTOs.GemTypeDTO;
-import ru.hotkto.jewelryworkshop.services.GemTypesService;
+import ru.hotkto.jewelryworkshop.DTOs.MetalTypeDTO;
+import ru.hotkto.jewelryworkshop.services.MetalTypesService;
 
 @Controller
-@RequestMapping("/gems")
-public class GemsController {
+@RequestMapping("/metals")
+public class MetalsController {
 
-    GemTypesService gemTypesService;
+    MetalTypesService metalTypesService;
 
-    public GemsController(GemTypesService gemTypesService) {
-        this.gemTypesService = gemTypesService;
+    public MetalsController(MetalTypesService metalTypesService) {
+        this.metalTypesService = metalTypesService;
     }
 
     @GetMapping
@@ -28,8 +28,8 @@ public class GemsController {
             Model model
     ) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC,"id"));
-        Page<GemTypeDTO> gems = gemTypesService.getAll(pageRequest);
-        model.addAttribute("gems", gems);
-        return "gems/all";
+        Page<MetalTypeDTO> metals = metalTypesService.getAll(pageRequest);
+        model.addAttribute("metals", metals);
+        return "metals/all";
     }
 }

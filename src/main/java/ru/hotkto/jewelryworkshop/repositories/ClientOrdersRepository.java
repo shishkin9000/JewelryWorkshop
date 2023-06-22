@@ -28,4 +28,11 @@ public interface ClientOrdersRepository extends GenericRepository<ClientOrder> {
             """)
     Page<ClientOrder> searchLooseOrders(Pageable pageable);
 
+
+    @Query(nativeQuery = true,
+            value = """
+        select * from clients_orders co
+        where co.employee_id = :employeeId
+            """)
+    Page<ClientOrder> getMyOrders(@Param(value = "employeeId") Long employeeId, Pageable pageable);
 }

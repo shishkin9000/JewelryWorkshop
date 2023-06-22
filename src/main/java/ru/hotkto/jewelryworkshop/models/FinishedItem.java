@@ -21,13 +21,13 @@ public class FinishedItem extends GenericModel {
     private int itemCode;
 
     @Column(name = "net_cost")
-    private double net_cost;
+    private double netCost;
 
     @Column(name = "description")
     private String description;
 
     @Column(name = "photo_path")
-    private String photo_path;
+    private String photoPath;
 
     @Column(name = "metals_info")
     private String metalsInfo;

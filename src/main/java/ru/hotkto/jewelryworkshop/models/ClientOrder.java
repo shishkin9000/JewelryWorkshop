@@ -24,9 +24,6 @@ public class ClientOrder extends GenericModel {
     @Column(name = "deadline")
     private LocalDate deadline;
 
-    @Column(name = "is_completed")
-    private boolean isCompleted;
-
     @Column(name = "completed_when")
     private LocalDateTime completedWhen;
 

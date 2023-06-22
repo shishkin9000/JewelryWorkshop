@@ -58,46 +58,49 @@
         <table class="table">
             <thead>
             <tr>
-                <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">ID</th>
+                <th scope="col">ID</th>
                 <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">Создан</th>
                 <th scope="col">Описание</th>
                 <th scope="col">Выполнить до</th>
                 <th scope="col">Цена</th>
+                <th scope="col">Состояние</th>
                 <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">Заказчик</th>
                 <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">Телефон</th>
                 <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">Сотрудник</th>
-                <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">Состояние</th>
-
+                <th sec:authorize="isAuthenticated()" scope="col">Подробно</th>
                 <th sec:authorize="isAuthenticated() && hasRole('USER')" scope="col">Взять заказ</th>
+
             </tr>
             </thead>
             <tr th:each="order : ${orders}">
-                <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))">
-                    <a
-                            class="text-link text-dark-emphasis text-decoration-none"
-                       th:href="'/orders/' + ${order.getId()}"
-                       th:text="${order.getId()}"></a>
-                </td>
+                <td th:text="${order.getId()}"></td>
                 <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                         th:text="${order.createdWhen.format(formatter)}"></td>
                 <td th:text="${order.getDescription()}"></td>
                 <td th:text="${order.getDeadline()}"></td>
                 <td th:text="${order.getPrice()}"></td>
+                <td th:text="${order.getStatus()}"></td>
                 <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                     th:text="${order.getClientDTO().getFullName()}"></td>
                 <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                     th:text="${order.getClientDTO().getPhone()}"></td>
                 <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
-                    th:text="${order.getEmployeeDTO().getFullName()}"></td>
-                <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
-                    th:text="${order.getStatus()}"></td>
+                    th:text="${order.getEmployeeDTO() == null } ? '' : ${order.getEmployeeDTO().getFullName()}"></td>
                 <td>
-                    <div sec:authorize="isAuthenticated() && hasRole('USER')">
+                    <div sec:authorize="isAuthenticated()">
+                        <a class="btn btn-sm btn-outline-success"
+                           th:href="'/clientsOrders/'+ ${order.getId()}">Подробно</a>
+                    </div>
+                </td>
+                <td>
+                    <div th:if="${order.getStatus() == 'свободен'}"
+                         sec:authorize="isAuthenticated() && hasRole('USER')">
                         <a class="btn btn-sm btn-outline-danger"
                            th:href="'clientsOrders/take/'+ ${order.getId()}"
                            onclick="return confirm('Взять заказ?')">Взять заказ</a>
                     </div>
                 </td>
+
                 <!--                <td th:text="${client.isDeleted()}"></td>-->
                 <!--                <td>-->
                 <!--                    sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->

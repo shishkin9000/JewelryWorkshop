@@ -22,7 +22,7 @@
                     <li sec:authorize="isAuthenticated() && (hasRole('USER'))" class="nav-link">
                         <!--            при повторном нажатии на кнопку падает с ошибкой: два раза подставляется /users/users-->
                         <!--              "/" в начале решает эту проблему-->
-                        <a class="white-text" aria-current="page" href="/users/my-orders">Мои заказы</a>
+                        <a class="color-white" aria-current="page" href="/clientsOrders/my-orders">Мои заказы</a>
                     </li>
                     <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
                         <a class="color-white" aria-current="page" href="/employees">Сотрудники</a>
@@ -34,7 +34,7 @@
                         <a class="color-white" aria-current="page" href="/metals">Металлы</a>
                     </li>
                     <li sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" class="nav-link">
-                        <a class="color-white" aria-current="page" href="/finished-items">Готовые изделия</a>
+                        <a class="color-white" aria-current="page" href="/finishedItems">Готовые изделия</a>
                     </li>
                 </ul>
                 <form class="d-flex" sec:authorize="!isAuthenticated()">
