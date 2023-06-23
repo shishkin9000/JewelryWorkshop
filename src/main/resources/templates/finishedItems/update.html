@@ -10,6 +10,9 @@
 <div layout:fragment="content">
   <h3 class="mt-3 mb-3">Добавить заказчика</h3>
   <form enctype="multipart/form-data" style="max-width: 50vw" method="POST" th:action="@{/finishedItems/update}" th:object="${finishedItemForm}">
+
+      <input type="hidden" name="id" th:value="${item.getId()}" class="form-control" id="id">
+
     <div class="mb-3">
       <label for="itemCode" class="form-label">Артикул</label>
       <input name="itemCode" th:value="${item.getItemCode()}" type="number" class="form-control" id="itemCode">
@@ -32,17 +35,17 @@
     </div>
     <div class="mb-3">
       <label for="metalTypes" class="form-label">Тип металла</label>
-      <input class="form-control" list="metalTypes" id="metalType-choice" name="metalTypeId">
+      <input class="form-control" list="metalTypes" id="metalType-choice" name="metalTypeId" required>
       <datalist id="metalTypes">
-        <option selected th:value="${item.getMetalTypes().get(0).getTitle()}" th:text="${item.getMetalTypes().get(0).getTitle()}"></option>
+<!--        <option selected th:value="${item.getMetalTypes().get(0).getTitle()}" th:text="${item.getMetalTypes().get(0).getTitle()}"></option>-->
         <option th:each="metal : ${metalTypes}" th:value="${metal.getId()}" th:text="${metal.getTitle()}"></option>
       </datalist>
     </div>
     <div class="mb-3">
       <label for="gemTypes" class="form-label">Тип камня</label>
-      <input class="form-control" list="gemTypes" id="gemType-choice" name="gemTypeId">
+      <input class="form-control" list="gemTypes" id="gemType-choice" name="gemTypeId" required>
       <datalist id="gemTypes">
-        <option selected th:value="${item.getGemTypes().get(0).getTitle()}" th:text="${item.getGemTypes().get(0).getTitle()}"></option>
+<!--        <option selected th:value="${item.getGemTypes().get(0).getTitle()}" th:text="${item.getGemTypes().get(0).getTitle()}"></option>-->
         <option th:each="gem : ${gemTypes}" th:value="${gem.getId()}" th:text="${gem.getTitle()}"></option>
       </datalist>
     </div>

@@ -43,15 +43,6 @@ public class FinishedItemService extends GenericService<FinishedItem, FinishedIt
         return new PageImpl<>(finishedItemDTOList, pageable, finishedItemPage.getTotalElements());
     }
 
-    public FinishedItemDTO create(final FinishedItemDTO newItem,
-                          MultipartFile file) {
-        String fileName = FileHelper.createFile(file, MiscellaneousConstants.FINISHED_ITEMS_DIRECTORY);
-        newItem.setPhotoPath(fileName);
-        newItem.setCreatedWhen(LocalDateTime.now());
-        newItem.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
-        return genericMapper.toDTO(finishedItemsRepository.save(genericMapper.toEntity(newItem)));
-    }
-
     public FinishedItemDTO create(final FinishedItemDTO newItem, Long metalId, Long gemId) throws NotFoundException {
         GemType gemType = gemTypesRepository.findById(gemId)
                 .orElseThrow(() -> new NotFoundException("Камень с id=" + gemId + " не найден"));
@@ -67,4 +58,23 @@ public class FinishedItemService extends GenericService<FinishedItem, FinishedIt
         newItem.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
         return genericMapper.toDTO(finishedItemsRepository.save(genericMapper.toEntity(newItem)));
     }
+
+    public FinishedItemDTO create(final FinishedItemDTO newItem, MultipartFile file, Long metalId, Long gemId) throws NotFoundException {
+        String fileName = FileHelper.createFile(file, MiscellaneousConstants.FINISHED_ITEMS_DIRECTORY);
+        GemType gemType = gemTypesRepository.findById(gemId)
+                .orElseThrow(() -> new NotFoundException("Камень с id=" + gemId + " не найден"));
+        MetalType metalType = metalTypesRepository.findById(metalId)
+                .orElseThrow(() -> new NotFoundException("Металл с id=" + metalId + " не найден"));
+        List<GemType> gemTypeList = new ArrayList<>();
+        List<MetalType> metalTypeList = new ArrayList<>();
+        metalTypeList.add(metalType);
+        gemTypeList.add(gemType);
+        newItem.setPhotoPath(fileName);
+        newItem.setGemTypes(gemTypeList);
+        newItem.setMetalTypes(metalTypeList);
+        newItem.setCreatedWhen(LocalDateTime.now());
+        newItem.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
+        return genericMapper.toDTO(finishedItemsRepository.save(genericMapper.toEntity(newItem)));
+    }
+
 }

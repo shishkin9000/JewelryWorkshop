@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Информация об изделии</title>
+</head>
+<body>
+<form layout:fragment="content">
+    <div>
+        <h3 th:text="'Информация об изделии: ' + ${item.getItemCode()}"></h3>
+        <hr>
+        <form class="row g-1">
+            <div class="mb-2 row">
+                <label for="netCost" class="col-sm-2 col-form-label no-border">Себестоимость</label>
+                <div class="col-sm-10">
+                    <p th:text="${item.getNetCost()}" type="text" readonly
+                       class="form-control-plaintext"
+                       id="netCost">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="description" class="col-sm-2 col-form-label no-border">Описание</label>
+                <div class="col-sm-10">
+                    <p th:text="${item.getDescription()}" type="text" readonly
+                       class="form-control-plaintext"
+                       id="description">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="metalsInfo" class="col-sm-2 col-form-label no-border">Металлы</label>
+                <div class="col-sm-10">
+                    <p th:text="${item.getMetalsInfo()}" type="text" readonly class="form-control-plaintext" id="metalsInfo">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="gemsInfo" class="col-sm-2 col-form-label no-border">Камни</label>
+                <div class="col-sm-10">
+                    <p th:text="${item.getGemsInfo()}" type="text" readonly class="form-control-plaintext"
+                       id="gemsInfo">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="metalTypes" class="col-sm-2 col-form-label no-border">Тип Металла</label>
+                <div class="col-sm-10">
+                    <p th:text="${item.getMetalTypes().get(0).getTitle()}" type="text" readonly class="form-control-plaintext"
+                       id="metalTypes">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="gemTypes" class="col-sm-2 col-form-label no-border">Тип Камня</label>
+                <div class="col-sm-10">
+                    <p th:text="${item.getGemTypes().get(0).getTitle()}" type="text" readonly class="form-control-plaintext"
+                       id="gemTypes">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="photo" class="col-sm-2 col-form-label no-border">Фото</label>
+                <div class="col-sm-10">
+                    <img src="/../../../files/finishedItems/kot.jpg" width="256" height="256" id="photo">
+                </div>
+            </div>
+            <hr class="hr"/>
+            <div class="row">
+                <a class="btn btn-secondary"
+                   th:href="'/finishedItems'">Назад</a>
+            </div>
+            <div class="row">
+                <a class="btn btn-danger margin-top-5px"
+                   sec:authorize="isAuthenticated() && (hasRole('DIRECTOR') || hasRole('ADMIN'))"
+                   th:href="'/finishedItems/delete/' + ${item.getId()}"
+                   onclick="return confirm('Изделие будет НАВСЕГДА! удалено из базы')">Удалить НАВСЕГДА</a>
+            </div>
+        </form>
+    </div>
+</form>
+</body>
+</html>

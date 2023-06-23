@@ -52,7 +52,7 @@
                     <th scope="col">Описание</th>
                     <th scope="col">Металлы</th>
                     <th scope="col">Камни</th>
-                    <th scope="col">Фото</th>
+                    <th scope="col">Подробно</th>
                     <th scope="col">Править</th>
                     <th scope="col">Удалить</th>
                 </tr>
@@ -65,7 +65,7 @@
                     <td th:text="${item.getGemsInfo()}"></td>
                     <td>
                         <a class="btn btn-sm btn-outline-success"
-                           th:href="${item.getPhotoPath()}">Фотка</a>
+                           th:href="'/finishedItems/info/'+ ${item.getId()}">Подробно</a>
                     </td>
                     <td>
                         <a class="btn btn-sm btn-outline-warning"
