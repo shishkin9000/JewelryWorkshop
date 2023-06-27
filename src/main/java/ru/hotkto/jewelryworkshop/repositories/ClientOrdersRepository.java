@@ -15,10 +15,31 @@ public interface ClientOrdersRepository extends GenericRepository<ClientOrder> {
 
     @Query(nativeQuery = true,
     value = """
-        select * from clients_orders co
-        where cast(co.created_when as date) = :orderCreationDate
+            select co.* from clients_orders co
+            join clients c on c.id = co.client_id
+            where cast(co.created_when as date) >= coalesce(:orderDateFrom, cast('1990-01-01' as date))
+            and cast(co.created_when as date) <= coalesce(:orderDateTo, cast('2100-01-01' as date))
+            and c.full_name ilike '%' || coalesce(:clientsName, '%') || '%'
+            and co.deadline <= now()
+            and co.status <> 'выполнен'
+            and co.status <> 'выдан'
             """)
-    Page<ClientOrder> searchOrders(@Param(value = "orderCreationDate") LocalDate orderCreationDate,
+    Page<ClientOrder> searchExpiredOrders(@Param(value = "orderDateFrom") LocalDate orderDateFrom,
+                                   @Param(value = "orderDateTo") LocalDate orderDateTo,
+                                   @Param(value = "clientsName") String clientsName,
+                                   Pageable pageable);
+
+    @Query(nativeQuery = true,
+            value = """
+            select co.* from clients_orders co
+            join clients c on c.id = co.client_id
+            where cast(co.created_when as date) >= coalesce(:orderDateFrom, cast('1990-01-01' as date))
+            and cast(co.created_when as date) <= coalesce(:orderDateTo, cast('2100-01-01' as date))
+            and c.full_name ilike '%' || coalesce(:clientsName, '%') || '%'
+            """)
+    Page<ClientOrder> searchOrders(@Param(value = "orderDateFrom") LocalDate orderDateFrom,
+                                   @Param(value = "orderDateTo") LocalDate orderDateTo,
+                                   @Param(value = "clientsName") String clientsName,
                                    Pageable pageable);
 
     @Query(nativeQuery = true,

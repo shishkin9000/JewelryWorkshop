@@ -8,6 +8,11 @@ h3 {
     text-align: center;
 }
 
+.red-text {
+    color: red !important;
+    text-decoration: none;
+}
+
 .color-white {
     color: white;
     text-decoration: none;

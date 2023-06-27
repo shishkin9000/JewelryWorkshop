@@ -34,8 +34,22 @@
         <label for="deadline" class="col-sm-2 col-form-label">Выполнить до</label>
         <div class="col-sm-10">
           <p th:text="${order.getDeadline()}"
-             th:classappend="${order.getDeadline() >= now} ? 'red-text'"
+             th:classappend="${order.getDeadline() <= now && order.getStatus() != 'выполнен'} ? 'red-text'"
              class="form-control-plaintext" id="deadline">
+        </div>
+      </div>
+      <div class="mb-2 row">
+        <label for="deadline" class="col-sm-2 col-form-label">Заказчик</label>
+        <div class="col-sm-10">
+          <p th:text="${order.getClientDTO().getFullName()}"
+             class="form-control-plaintext" id="client">
+        </div>
+      </div>
+      <div class="mb-2 row">
+        <label for="deadline" class="col-sm-2 col-form-label">Телефон</label>
+        <div class="col-sm-10">
+          <p th:text="${order.getClientDTO().getPhone()}"
+             class="form-control-plaintext" id="phone">
         </div>
       </div>
       </form>

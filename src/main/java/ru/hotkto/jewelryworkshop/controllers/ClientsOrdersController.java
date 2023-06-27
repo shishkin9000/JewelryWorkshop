@@ -20,7 +20,9 @@ import ru.hotkto.jewelryworkshop.services.customUserDetails.CustomUserDetails;
 import ru.hotkto.jewelryworkshop.utils.ContextUserTaker;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/clientsOrders")
@@ -44,9 +46,11 @@ public class ClientsOrdersController {
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
             Model model
     ) throws NotFoundException {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));;
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
+        ;
         Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        model.addAttribute("now", LocalDate.now());
         model.addAttribute("orders", clientOrderDTOs);
         model.addAttribute("formatter", formatter);
         return "clientsOrders/all";
@@ -62,6 +66,7 @@ public class ClientsOrdersController {
         EmployeeDTO employeeDTO = ContextUserTaker.getContextUser(employeeService, SecurityContextHolder.getContext());
         Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getMyOrders(employeeDTO, pageRequest);
 //        model.addAttribute("inWork", ClientOrderStatusConstants.IN_WORK);
+        model.addAttribute("now", LocalDate.now());
         model.addAttribute("orders", clientOrderDTOs);
         return "employees/my-orders";
     }
@@ -98,7 +103,7 @@ public class ClientsOrdersController {
 
     @GetMapping("/take/{clientOrderId}")
     public String takeOrder(@PathVariable Long clientOrderId) throws NotFoundException {
-        CustomUserDetails customUserDetails = (CustomUserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        CustomUserDetails customUserDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Long employeeId = Long.valueOf(customUserDetails.getUserId());
         EmployeeDTO employeeDTO = employeeService.getOne(employeeId);
         ClientOrderDTO clientOrderDTO = clientOrderService.getOne(clientOrderId);
@@ -114,15 +119,20 @@ public class ClientsOrdersController {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC, "created_by"));
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         model.addAttribute("formatter", formatter);
-        if (clientOrderSearchDTO.getOrderCreationDate() == null) {
+        if (Objects.isNull(clientOrderSearchDTO.getOrderDateFrom())
+                && Objects.isNull(clientOrderSearchDTO.getOrderDateTo())
+                && Objects.equals(clientOrderSearchDTO.getClientsName(), "")
+                && Objects.isNull(clientOrderSearchDTO.getIsDeadlineExpired())) {
             pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
             Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
             model.addAttribute("orders", clientOrderDTOs);
             return "clientsOrders/all";
         }
-
-        model.addAttribute("orders", clientOrderService.searchOrders(clientOrderSearchDTO, pageRequest));
-
+        if (clientOrderSearchDTO.getIsDeadlineExpired()) {
+            model.addAttribute("orders", clientOrderService.searchExpiredOrders(clientOrderSearchDTO, pageRequest));
+        } else {
+            model.addAttribute("orders", clientOrderService.searchOrders(clientOrderSearchDTO, pageRequest));
+        }
         return "clientsOrders/all";
     }
 

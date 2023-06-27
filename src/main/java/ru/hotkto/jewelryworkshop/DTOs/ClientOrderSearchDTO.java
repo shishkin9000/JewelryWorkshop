@@ -6,5 +6,8 @@ import java.time.LocalDate;
 
 @Data
 public class ClientOrderSearchDTO {
-    private LocalDate orderCreationDate;
+    private LocalDate orderDateFrom;
+    private LocalDate orderDateTo;
+    private String clientsName;
+    private Boolean isDeadlineExpired;
 }

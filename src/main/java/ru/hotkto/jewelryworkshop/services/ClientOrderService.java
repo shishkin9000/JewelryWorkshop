@@ -69,9 +69,28 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
     }
 
     public Page<ClientOrderDTO> searchOrders(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {
-        LocalDate orderCreationDate = clientOrderSearchDTO.getOrderCreationDate();
+        LocalDate orderDateFrom = clientOrderSearchDTO.getOrderDateFrom();
+        LocalDate orderDateTo = clientOrderSearchDTO.getOrderDateTo();
+        String clientsName = clientOrderSearchDTO.getClientsName();
         Page<ClientOrder> ordersPaginated = clientOrdersRepository.searchOrders(
-                orderCreationDate,
+                orderDateFrom,
+                orderDateTo,
+                clientsName,
+                pageable
+        );
+
+        List<ClientOrderDTO> clientDTOList = genericMapper.toDTOs(ordersPaginated.getContent());
+        return new PageImpl<>(clientDTOList, pageable, ordersPaginated.getTotalElements());
+    }
+
+    public Page<ClientOrderDTO> searchExpiredOrders(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {
+        LocalDate orderDateFrom = clientOrderSearchDTO.getOrderDateFrom();
+        LocalDate orderDateTo = clientOrderSearchDTO.getOrderDateTo();
+        String clientsName = clientOrderSearchDTO.getClientsName();
+        Page<ClientOrder> ordersPaginated = clientOrdersRepository.searchExpiredOrders(
+                orderDateFrom,
+                orderDateTo,
+                clientsName,
                 pageable
         );
 

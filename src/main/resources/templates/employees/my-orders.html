@@ -61,7 +61,8 @@
                 <td th:text="${order.getId()}"></td>
                 <td th:text="${order.getDescription()}"></td>
                 <td th:text="${order.getPrice()}"></td>
-                <td th:text="${order.getDeadline()}"></td>
+                <td th:text="${order.getDeadline()}"
+                    th:classappend="${order.getDeadline() <= now && order.getStatus() != 'выполнен'} ? 'red-text'"></td>
                 <td th:text="${order.getStatus()}"></td>
                 <td>
                     <div>
