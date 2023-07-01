@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавить металл</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h3 class="mt-3 mb-3">Добавить металл</h3>
+  <form style="max-width: 50vw" method="POST" th:action="@{/metals/add}" th:object="${metalForm}">
+    <div class="mb-3">
+      <label for="title" class="form-label">Название</label>
+      <input name="title" type="text" class="form-control" id="title">
+    </div>
+    <button type="submit" class="btn btn-primary">Добавить</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='../clientsOrders'">Назад</button>
+  </form>
+</div>
+</body>
+</html>

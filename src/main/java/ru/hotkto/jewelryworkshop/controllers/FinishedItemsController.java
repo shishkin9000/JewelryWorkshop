@@ -96,6 +96,7 @@ public class FinishedItemsController {
         String[] split = path.split("/");
         String fileName = split[split.length - 1];
         model.addAttribute("filename", fileName);
+        model.addAttribute("path", path);
         model.addAttribute("item", item);
         model.addAttribute("metalTypes", metalTypesService.getAll());
         model.addAttribute("gemTypes", gemTypesService.getAll());

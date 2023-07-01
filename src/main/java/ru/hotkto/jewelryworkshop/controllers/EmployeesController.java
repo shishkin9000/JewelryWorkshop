@@ -76,6 +76,21 @@ public class EmployeesController {
         return "redirect:/employees";
     }
 
+    @GetMapping("/update/{id}")
+    public String edit(@PathVariable Long id,
+                       Model model) throws NotFoundException {
+        model.addAttribute("employee", employeeService.getOne(id));
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        model.addAttribute("formatter", formatter);
+        return "employees/update";
+    }
+
+    @PostMapping("/update")
+    public String edit(@ModelAttribute("employeeForm") EmployeeDTO employeeDTO) {
+        employeeService.update(employeeDTO);
+        return "redirect:/employees";
+    }
+
     @GetMapping("/soft-delete/{id}")
     public String softDelete(@PathVariable Long id) throws NotFoundException {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();

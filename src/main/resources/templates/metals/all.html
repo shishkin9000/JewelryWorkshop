@@ -17,7 +17,7 @@
 <body>
 <div layout:fragment="content">
   <div>
-    <form method="POST" th:action="@{/gems/search}" th:object="${gemSearchForm}">
+    <form method="POST" th:action="@{/metals/search}" th:object="${metalSearchForm}">
       <div class="mt-0 row g-2">
         <div class="col-md"></div>
         <div class="col-md">
@@ -33,15 +33,15 @@
     </form>
   </div>
   <hr>
-<!--  <div class="row">-->
-<!--    <a-->
-<!--            href="gems/add"-->
-<!--            class="btn btn-lg btn-outline-dark"-->
-<!--            role="button"-->
-<!--            style="float: right"-->
-<!--            aria-disabled="true">Добавить металл-->
-<!--    </a>-->
-<!--  </div>-->
+  <div class="row">
+    <a
+            href="metals/add"
+            class="btn btn-lg btn-outline-dark"
+            role="button"
+            style="float: right"
+            aria-disabled="true">Добавить металл
+    </a>
+  </div>
   <div class="row">
     <div class="col"></div>
     <div class="col-6">

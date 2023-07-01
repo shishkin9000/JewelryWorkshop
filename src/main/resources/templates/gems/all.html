@@ -33,15 +33,15 @@
         </form>
     </div>
     <hr>
-<!--    <div class="row">-->
-<!--        <a-->
-<!--                href="gems/add"-->
-<!--                class="btn btn-lg btn-outline-dark"-->
-<!--                role="button"-->
-<!--                style="float: right"-->
-<!--                aria-disabled="true">Добавить камень-->
-<!--        </a>-->
-<!--    </div>-->
+    <div class="row">
+        <a
+                href="gems/add"
+                class="btn btn-lg btn-outline-dark"
+                role="button"
+                style="float: right"
+                aria-disabled="true">Добавить камень
+        </a>
+    </div>
     <div class="row">
         <div class="col"></div>
         <div class="col-6">
@@ -51,6 +51,8 @@
                     <th></th>
                     <th scope="col">ID</th>
                     <th scope="col">Название</th>
+                    <th scope="col">Править</th>
+                    <th scope="col">Удалить</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -58,6 +60,8 @@
                     <td></td>
                     <td th:text="${gem.getId()}"></td>
                     <td th:text="${gem.getTitle()}"></td>
+                    <td></td>
+                    <td></td>
                     <td></td>
                 </tr>
             </table>

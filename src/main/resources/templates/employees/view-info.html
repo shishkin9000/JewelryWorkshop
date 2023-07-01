@@ -14,19 +14,19 @@
         <hr>
         <form class="row g-1">
             <div class="mb-2 row">
-                <label for="position" class="col-sm-2 col-form-label no-border">Принят на работу:</label>
+                <label for="createdBy" class="col-sm-2 col-form-label no-border">Добавил в базу:</label>
+                <div class="col-sm-10">
+                    <p th:text="${employee.getCreatedBy()}" type="text" readonly
+                       class="form-control-plaintext"
+                       id="createdBy">
+                </div>
+            </div>
+            <div class="mb-2 row">
+                <label for="createdWhen" class="col-sm-2 col-form-label no-border">Принят на работу:</label>
                 <div class="col-sm-10">
                     <p th:text="${employee.getCreatedWhen().format(formatter)}" type="text" readonly
                        class="form-control-plaintext"
                        id="createdWhen">
-                </div>
-            </div>
-            <div class="mb-2 row">
-                <label for="position" class="col-sm-2 col-form-label no-border">Должность:</label>
-                <div class="col-sm-10">
-                    <p th:text="${employee.getEmployeePosition().getTitle()}" type="text" readonly
-                       class="form-control-plaintext"
-                       id="position">
                 </div>
             </div>
             <div class="mb-2 row">
@@ -52,7 +52,8 @@
             <div class="mb-2 row">
                 <label for="address" class="col-sm-2 col-form-label no-border">Действующий:</label>
                 <div class="col-sm-10">
-                    <p th:text="${employee.isDeleted() ? 'Нет' : 'Да'}" type="text" readonly class="form-control-plaintext"
+                    <p th:text="${employee.isDeleted() ? 'Нет' : 'Да'}" type="text" readonly
+                       class="form-control-plaintext"
                        id="isDeleted">
                 </div>
             </div>
@@ -66,7 +67,8 @@
             <div class="mb-2 row" th:if="${employee.isDeleted()}">
                 <label for="address" class="col-sm-2 col-form-label no-border">Дата удаления:</label>
                 <div class="col-sm-10">
-                    <p th:text="${employee.getDeletedWhen().format(formatter)}" type="text" readonly class="form-control-plaintext"
+                    <p th:text="${employee.getDeletedWhen().format(formatter)}" type="text" readonly
+                       class="form-control-plaintext"
                        id="deletedWhen">
                 </div>
             </div>
@@ -76,13 +78,18 @@
                    th:href="'/employees'">Назад</a>
             </div>
             <div class="row">
+                <a th:if="${employee.getEmployeePosition().getTitle() != 'Директор'}"
+                        class="btn btn-primary margin-top-5px"
+                   th:href="'/employees/update/' + ${employee.getId()}">Править</a>
+            </div>
+            <div class="row">
                 <a class="btn btn-warning margin-top-5px"
                    th:if="${employee.isDeleted()}"
                    th:href="'/employees/restore/' + ${employee.getId()}">Восстановить</a>
             </div>
             <div class="row">
                 <a class="btn btn-warning text-color-white margin-top-5px"
-                   th:if="${!employee.isDeleted()}"
+                   th:if="${!employee.isDeleted() && employee.getEmployeePosition().getTitle() != 'Директор'}"
                    th:href="'/employees/soft-delete/' + ${employee.getId()}"
                    onclick="return confirm('Сотрудник будет помечен в базе флагом \'isDeleted()\'')">Удалить</a>
             </div>

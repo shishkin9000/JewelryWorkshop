@@ -60,4 +60,5 @@ public class EmployeeService extends GenericService<Employee, EmployeeDTO> {
         List<EmployeeDTO> clientDTOList = genericMapper.toDTOs(employeesPaginated.getContent());
         return new PageImpl<>(clientDTOList, pageable, employeesPaginated.getTotalElements());
     }
+
 }

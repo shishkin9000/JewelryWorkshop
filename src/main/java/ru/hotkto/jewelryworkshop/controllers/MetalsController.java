@@ -5,9 +5,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import ru.hotkto.jewelryworkshop.DTOs.GemTypeDTO;
 import ru.hotkto.jewelryworkshop.DTOs.MetalTypeDTO;
 import ru.hotkto.jewelryworkshop.services.MetalTypesService;
 
@@ -31,5 +30,16 @@ public class MetalsController {
         Page<MetalTypeDTO> metals = metalTypesService.getAll(pageRequest);
         model.addAttribute("metals", metals);
         return "metals/all";
+    }
+
+    @GetMapping("/add")
+    public String add() {
+        return "metals/add";
+    }
+
+    @PostMapping("/add")
+    public String add(@ModelAttribute("metalForm") MetalTypeDTO metalTypeDTO) {
+        metalTypesService.create(metalTypeDTO);
+        return "redirect:/metals";
     }
 }

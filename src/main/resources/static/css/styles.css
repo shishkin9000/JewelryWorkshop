@@ -4,6 +4,10 @@ footer {
     bottom: 0;
 }
 
+.content-wrapper {
+    width: 1200px;
+}
+
 h3 {
     text-align: center;
 }
@@ -26,6 +30,10 @@ h3 {
 
 .color-white:hover {
     color: burlywood;
+}
+
+.hover-white:hover {
+    color: white !important;
 }
 
 .hover-blue:hover {
