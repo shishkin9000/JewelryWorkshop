@@ -41,11 +41,12 @@
     </div>
     <hr>
     <div class="row">
-        <!--                sec:authorize="isAuthenticated()"-->
+
         <a
 
                 href="employees/add"
                 class="btn btn-lg btn-outline-dark"
+                sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                 role="button"
                 style="float: right"
                 aria-disabled="true">Добавить сотрудника

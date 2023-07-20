@@ -20,15 +20,40 @@
     <h3 th:text="'Информация о клиенте: ' + ${client.getFullName()}"></h3>
     <form class="row g-1">
       <div class="mb-2 row">
-        <label for="status" class="col-sm-2 col-form-label no-border">Телефон</label>
+        <label for="fullName" class="col-sm-2 col-form-label no-border">ФИО</label>
         <div class="col-sm-10">
-          <p th:text="${client.getPhone()}" type="text" readonly class="form-control-plaintext" id="status">
+          <p th:text="${client.getFullName()}" type="text" readonly class="form-control-plaintext" id="fullName">
+        </div>
+      </div>
+      <div class="mb-2 row">
+        <label for="phone" class="col-sm-2 col-form-label no-border">Телефон</label>
+        <div class="col-sm-10">
+          <p th:text="${client.getPhone()}" type="text" readonly class="form-control-plaintext" id="phone">
         </div>
       </div>
     </form>
     <hr class="hr"/>
-    <div class="mt-2">
-      <button type="button" class="btn btn-secondary" onclick="window.history.back()">Back</button>
+    <div class="row">
+      <a class="btn btn-secondary"
+         th:href="'/clients'">Назад</a>
+    </div>
+    <div class="row">
+      <a class="btn btn-primary margin-top-5px"
+         sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
+         th:href="'/clients/update/' + ${client.getId()}">Править</a>
+    </div>
+    <div class="row">
+      <a class="btn btn-warning margin-top-5px text-color-white"
+         sec:authorize="isAuthenticated() && hasRole('ADMIN')"
+         th:if="${client.isDeleted()}"
+         th:href="'/clients/restore/' + ${client.getId()}">Восстановить</a>
+    </div>
+    <div class="row">
+      <a class="btn btn-warning text-color-white margin-top-5px"
+         sec:authorize="isAuthenticated() && hasRole('ADMIN')"
+         th:if="${!client.isDeleted()}"
+         th:href="'/clients/soft-delete/' + ${client.getId()}"
+         onclick="return confirm('Заказчик будет помечен в базе флагом \'isDeleted()\'')">Удалить</a>
     </div>
   </div>
 </form>

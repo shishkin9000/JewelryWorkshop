@@ -8,18 +8,13 @@
     <meta charset="UTF-8">
     <title>Заказы</title>
     <script th:inline="javascript"></script>
-    <style>
-        a {
-            margin-left: 5px;
-        }
-    </style>
 </head>
 <body>
 <div layout:fragment="content">
     <div>
         <form method="POST" th:action="@{/clientsOrders/search}" th:object="${clientOrderSearchForm}">
             <div class="mt-0 row g-2">
-                <div class="col-md"></div>
+<!--                <div class="col-md"></div>-->
                 <div class="col-md">
                     <div class="form-floating">
                         <input name="orderDateFrom" type="date" class="form-control" id="orderDateFrom"
@@ -50,8 +45,11 @@
                         <label for="orderDateFrom">Просрочен</label>
                     </div>
                 </div>
-                <div class="col-md"></div>
-                <button type="submit" class="btn gold-background text-color-white">Поиск</button>
+<!--                <div class="col-md"></div>-->
+                <div class="row g-2">
+                    <button type="submit" class="btn gold-background text-color-white">Поиск</button>
+                </div>
+
             </div>
 
         </form>
@@ -105,7 +103,7 @@
                 <td th:text="${order.createdWhen.format(formatter)}"></td>
                 <td th:text="${order.getDescription()}"></td>
                 <td th:text="${order.getDeadline()}"
-                    th:classappend="${order.getDeadline() <= now && order.getStatus() != 'выполнен'} ? 'red-text'"></td>
+                    th:classappend="${order.getDeadline() <= now && (order.getStatus() != 'выполнен' && order.getStatus() != 'выдан')} ? 'red-text'"></td>
                 <td th:text="${order.getPrice()}"></td>
                 <td th:text="${order.getStatus()}"></td>
                 <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"

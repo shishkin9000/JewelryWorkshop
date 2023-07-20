@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -67,5 +68,32 @@ public class ClientsController {
         ClientDTO clientDTO = clientService.getOne(id);
         model.addAttribute("client", clientDTO);
         return "clients/view-info";
+    }
+
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Long id,
+                         Model model) throws NotFoundException {
+        ClientDTO clientDTO = clientService.getOne(id);
+        model.addAttribute("client", clientDTO);
+        return "clients/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute("clientForm") ClientDTO clientDTO) {
+        clientService.update(clientDTO);
+        return "redirect:/clients";
+    }
+
+    @GetMapping("/soft-delete/{id}")
+    public String softDelete(@PathVariable Long id) throws NotFoundException {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        clientService.softDelete(id, name);
+        return "redirect:/clients/" + id;
+    }
+
+    @GetMapping("/restore/{id}")
+    public String restore(@PathVariable Long id) throws NotFoundException {
+        clientService.restore(id);
+        return "redirect:/clients/" + id;
     }
 }

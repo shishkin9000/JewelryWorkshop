@@ -11,6 +11,8 @@ import ru.hotkto.jewelryworkshop.repositories.ClientOrdersRepository;
 import ru.hotkto.jewelryworkshop.repositories.ClientsRepository;
 import ru.hotkto.jewelryworkshop.repositories.EmployeesRepository;
 
+import java.util.Objects;
+
 @Component
 public class ClientOrderMapper extends GenericMapper<ClientOrder, ClientOrderDTO> {
 
@@ -59,12 +61,16 @@ public class ClientOrderMapper extends GenericMapper<ClientOrder, ClientOrderDTO
     @Override
     protected void mapSpecificFields(ClientOrderDTO source, ClientOrder destination) {
         Long clientId = source.getClientDTO().getId();
-        Long employeeId = source.getEmployeeDTO().getId();
+        Long employeeId;
+        if (Objects.nonNull(source.getEmployeeDTO().getId())) {
+            employeeId = source.getEmployeeDTO().getId();
+            Employee employee = employeesRepository.findById(employeeId)
+                    .orElseThrow(() -> new RuntimeException("Employee with id=" + employeeId + " not found"));
+            destination.setEmployee(employee);
+        }
         Client client = clientsRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client with id=" + clientId + " not found"));
-        Employee employee = employeesRepository.findById(employeeId)
-                .orElseThrow(() -> new RuntimeException("Employee with id=" + employeeId + " not found"));
+
         destination.setClient(client);
-        destination.setEmployee(employee);
     }
 }

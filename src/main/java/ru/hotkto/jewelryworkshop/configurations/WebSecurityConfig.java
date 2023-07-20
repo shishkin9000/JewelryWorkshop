@@ -30,14 +30,14 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
-                        .anyRequest().permitAll()
-                ).formLogin(form -> form
+                        .anyRequest().permitAll())
+                .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/")
+                .defaultSuccessUrl("/clientsOrders")
                 .permitAll())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
+                        .logoutSuccessUrl("/login")
                         .deleteCookies("JSESSIONID")
                         .permitAll()
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

@@ -8,11 +8,6 @@
     <meta charset="UTF-8">
     <title>Заказчики</title>
     <script th:inline="javascript"></script>
-    <style>
-        a {
-            margin-left: 5px;
-        }
-    </style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -39,7 +34,6 @@
     </div>
     <hr>
     <div class="row">
-        <!--                        sec:authorize="isAuthenticated()"-->
         <a
                 sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                 href="/clients/add"
@@ -66,11 +60,7 @@
             <tr>
                 <th scope="col">ФИО</th>
                 <th scope="col">Телефон</th>
-<!--                <th scope="col">isDeleted?</th>-->
-<!--                <th scope="col">Update</th>-->
-<!--                <th scope="col">Restore</th>-->
-<!--                <th scope="col">SOFT delete</th>-->
-<!--                <th scope="col">HARD delete</th>-->
+                <th scope="col">Подробно</th>
             </tr>
             </thead>
             <tr th:each="client : ${clients}">
@@ -79,37 +69,11 @@
                        th:text="${client.getFullName()}"></a>
                 </td>
                 <td th:text="${client.getPhone()}"></td>
-<!--                <td th:text="${client.isDeleted()}"></td>-->
-<!--                <td>-->
-<!--                    sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"-->
-<!--                    <div>-->
-<!--                        <a class="btn btn-sm btn-outline-success" th:href="'/clients/update/' + ${client.getId()}">Update</a>-->
-<!--                    </div>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <div>-->
-<!--                        <a th:if="${client.isDeleted()}"-->
-<!--                           class="btn btn-sm btn-outline-warning"-->
-<!--                           th:href="'/clients/restore/' + ${client.getId()}"-->
-<!--                           onclick="return confirm('The client will be RESTORED')">Restore</a>-->
-<!--                    </div>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <div>-->
-<!--                        <a th:if="${!client.isDeleted()}"-->
-<!--                           class="btn btn-sm btn-outline-danger"-->
-<!--                           th:href="'/clients/soft-delete/' + ${client.getId()}"-->
-<!--                           onclick="return confirm('The client will be SOFT DELETED')">SOFT Delete</a>-->
-<!--                    </div>-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    <div>-->
-<!--                        <a th:if="${client.isDeleted()}"-->
-<!--                           class="btn btn-sm btn-outline-danger"-->
-<!--                           th:href="'/clients/hard-delete/' + ${client.getId()}"-->
-<!--                           onclick="return confirm('The client will be HARD!!! DELETED')">HARD Delete</a>-->
-<!--                    </div>-->
-<!--                </td>-->
+                <td>
+                    <div>
+                        <a class="btn btn-sm btn-outline-success" th:href="'/clients/' + ${client.getId()}">Подробно</a>
+                    </div>
+                </td>
             </tr>
         </table>
         </div>

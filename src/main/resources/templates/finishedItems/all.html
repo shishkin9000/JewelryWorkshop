@@ -53,8 +53,6 @@
                     <th scope="col">Металлы</th>
                     <th scope="col">Камни</th>
                     <th scope="col">Подробно</th>
-                    <th scope="col">Править</th>
-                    <th scope="col">Удалить</th>
                 </tr>
                 </thead>
                 <tr th:each="item : ${finishedItems}">
@@ -66,15 +64,6 @@
                     <td>
                         <a class="btn btn-sm btn-outline-success"
                            th:href="'/finishedItems/info/'+ ${item.getId()}">Подробно</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-outline-warning"
-                           th:href="'/finishedItems/update/'+ ${item.getId()}">Править</a>
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-outline-danger"
-                           th:href="'/finishedItems/delete/'+ ${item.getId()}"
-                           onclick="return confirm('Удалить изделие?')">Удалить</a>
                     </td>
                 </tr>
             </table>

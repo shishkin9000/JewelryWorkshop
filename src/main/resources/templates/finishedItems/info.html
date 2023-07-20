@@ -69,6 +69,10 @@
                    th:href="'/finishedItems'">Назад</a>
             </div>
             <div class="row">
+                <a class="btn margin-top-5px btn-primary"
+                   th:href="'/finishedItems/update/'+ ${item.getId()}">Править</a>
+            </div>
+            <div class="row">
                 <a class="btn btn-danger margin-top-5px"
                    sec:authorize="isAuthenticated() && (hasRole('DIRECTOR') || hasRole('ADMIN'))"
                    th:href="'/finishedItems/delete/' + ${item.getId()}"

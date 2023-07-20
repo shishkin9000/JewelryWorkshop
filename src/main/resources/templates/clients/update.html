@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Изменение</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h3 class="mt-3 mb-3">Изменение данных о клиенте</h3>
+  <form style="max-width: 50vw" method="POST" th:action="@{/clients/update}" th:object="${clientForm}">
+
+    <input type="hidden" name="id" th:value="${client.getId()}" class="form-control" id="id">
+
+    <div class="mb-3">
+      <label for="fullName" class="form-label">ФИО</label>
+      <input name="fullName" th:value="${client.getFullName()}" type="text" class="form-control" id="fullName">
+    </div>
+    <div class="mb-3">
+      <label for="phone" class="form-label">Телефон</label>
+      <input name="phone" th:value="${client.getPhone()}" type="text" class="form-control" id="phone">
+    </div>
+    <button type="submit" class="btn btn-primary">Обновить</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='/clients'">Назад</button>
+
+  </form>
+</div>
+</body>
+</html>
