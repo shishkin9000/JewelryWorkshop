@@ -72,3 +72,11 @@ h3 {
 .margin-left-5px {
     margin-left: 5px;
 }
+
+.margin-top-300px {
+    margin-top: 300px !important;
+}
+
+.index-info {
+    font-size: xx-large;
+}

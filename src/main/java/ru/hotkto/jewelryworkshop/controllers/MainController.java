@@ -26,6 +26,10 @@ public class MainController {
     public long getCompletedOrdersAmount(){
         return getAllOrders().stream().filter(clientOrderDTO -> clientOrderDTO.getStatus().equals("выдан")).count();
     }
+
+    public long getWaitingForClientOrders() {
+        return getAllOrders().stream().filter(clientOrderDTO -> clientOrderDTO.getStatus().equals("выполнен")).count();
+    }
     public long getExpiredOrdersAmount() {
         return getAllOrders().stream()
                 .filter(
@@ -44,6 +48,7 @@ public class MainController {
         model.addAttribute("looseOrdersAmount", getLooseOrdersAmount());
         model.addAttribute("completedOrdersAmount", getCompletedOrdersAmount());
         model.addAttribute("expiredOrdersAmount", getExpiredOrdersAmount());
+        model.addAttribute("waitingForClient", getWaitingForClientOrders());
         return "index";
     }
 }
