@@ -46,13 +46,39 @@ public class ClientsOrdersController {
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
             Model model
     ) throws NotFoundException {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
-        ;
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
         Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         model.addAttribute("now", LocalDate.now());
         model.addAttribute("orders", clientOrderDTOs);
         model.addAttribute("formatter", formatter);
+        return "clientsOrders/all";
+    }
+
+    @PostMapping("/search")
+    public String searchOrders(@RequestParam(value = "page", defaultValue = "1") int page,
+                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
+                               @ModelAttribute("orderSearchForm") ClientOrderSearchDTO clientOrderSearchDTO,
+                               Model model) {
+        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        model.addAttribute("now", LocalDate.now());
+        model.addAttribute("formatter", formatter);
+        if (Objects.isNull(clientOrderSearchDTO.getOrderDateFrom())
+                && Objects.isNull(clientOrderSearchDTO.getOrderDateTo())
+                && Objects.equals(clientOrderSearchDTO.getClientsName(), "")
+                && !clientOrderSearchDTO.getIsDeadlineExpired()) {
+            pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+            Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
+            model.addAttribute("orders", clientOrderDTOs);
+            return "clientsOrders/all";
+        }
+        if (clientOrderSearchDTO.getIsDeadlineExpired()) {
+            model.addAttribute("orders", clientOrderService.searchExpiredOrders(clientOrderSearchDTO, pageRequest));
+        } else {
+            model.addAttribute("orders", clientOrderService.searchOrders(clientOrderSearchDTO, pageRequest));
+        }
+
         return "clientsOrders/all";
     }
 
@@ -111,30 +137,7 @@ public class ClientsOrdersController {
         return "redirect:/clientsOrders";
     }
 
-    @PostMapping("/search")
-    public String searchOrders(@RequestParam(value = "page", defaultValue = "1") int page,
-                               @RequestParam(value = "size", defaultValue = "10") int pageSize,
-                               @ModelAttribute("orderSearchForm") ClientOrderSearchDTO clientOrderSearchDTO,
-                               Model model) {
-        PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.ASC, "created_by"));
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
-        model.addAttribute("formatter", formatter);
-        if (Objects.isNull(clientOrderSearchDTO.getOrderDateFrom())
-                && Objects.isNull(clientOrderSearchDTO.getOrderDateTo())
-                && Objects.equals(clientOrderSearchDTO.getClientsName(), "")
-                && Objects.isNull(clientOrderSearchDTO.getIsDeadlineExpired())) {
-            pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "createdWhen"));
-            Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
-            model.addAttribute("orders", clientOrderDTOs);
-            return "clientsOrders/all";
-        }
-        if (clientOrderSearchDTO.getIsDeadlineExpired()) {
-            model.addAttribute("orders", clientOrderService.searchExpiredOrders(clientOrderSearchDTO, pageRequest));
-        } else {
-            model.addAttribute("orders", clientOrderService.searchOrders(clientOrderSearchDTO, pageRequest));
-        }
-        return "clientsOrders/all";
-    }
+
 
 
 }
