@@ -20,6 +20,7 @@
         <p class="red-text"
            th:text="'Просроченые заказы: ' + ${expiredOrdersAmount} + '!'"></p>
     </div>
+
     <script type="text/javascript">
         function zero_first_format(value) {
             if (value < 10) {
@@ -27,8 +28,8 @@
             }
             return value;
         }
-        month_title = new Array("января", "февраля", "марта", "апреля", "мая", "июня",
-            "июля", "августа", "сентября", "октября", "ноября", "декабря");
+        month_title = ["января", "февраля", "марта", "апреля", "мая", "июня",
+            "июля", "августа", "сентября", "октября", "ноября", "декабря"];
         function date_time() {
             var current_datetime = new Date();
             var day = zero_first_format(current_datetime.getDate());

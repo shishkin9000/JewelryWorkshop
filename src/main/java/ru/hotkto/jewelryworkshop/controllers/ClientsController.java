@@ -7,13 +7,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
-import ru.hotkto.jewelryworkshop.models.Client;
-import ru.hotkto.jewelryworkshop.repositories.ClientsRepository;
 import ru.hotkto.jewelryworkshop.services.ClientService;
 
 @Controller
@@ -57,9 +53,15 @@ public class ClientsController {
     }
 
     @PostMapping("/add")
-    public String addClient(@ModelAttribute("clientForm") ClientDTO clientDTO) {
-        clientService.create(clientDTO);
-        return "redirect:/clients";
+    public String addClient(@ModelAttribute("clientForm") ClientDTO clientDTO, Model model) {
+            if (clientService.isPhoneUnique(clientDTO)) {
+                clientService.create(clientDTO);
+                return "redirect:/clients";
+            } else {
+                model.addAttribute("errorMsg", "Такой номер телефона уже есть в базе");
+                return "clients/add";
+            }
+
     }
 
     @GetMapping("/{id}")
@@ -67,7 +69,7 @@ public class ClientsController {
                            Model model) throws NotFoundException {
         ClientDTO clientDTO = clientService.getOne(id);
         model.addAttribute("client", clientDTO);
-        return "clients/view-info";
+        return "clients/info";
     }
 
     @GetMapping("/update/{id}")

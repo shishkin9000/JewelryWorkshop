@@ -6,13 +6,18 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
 import ru.hotkto.jewelryworkshop.constants.ClientOrderStatusConstants;
 import ru.hotkto.jewelryworkshop.mappers.ClientOrderMapper;
+import ru.hotkto.jewelryworkshop.models.Client;
 import ru.hotkto.jewelryworkshop.models.ClientOrder;
+import ru.hotkto.jewelryworkshop.models.Employee;
 import ru.hotkto.jewelryworkshop.repositories.ClientOrdersRepository;
+import ru.hotkto.jewelryworkshop.repositories.ClientsRepository;
+import ru.hotkto.jewelryworkshop.repositories.EmployeesRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,10 +27,16 @@ import java.util.List;
 public class ClientOrderService extends GenericService<ClientOrder, ClientOrderDTO> {
 
     ClientOrdersRepository clientOrdersRepository;
+    ClientService clientService;
+    EmployeeService employeeService;
     protected ClientOrderService(ClientOrdersRepository clientOrdersRepository,
-                                 ClientOrderMapper clientOrderMapper) {
+                                 ClientOrderMapper clientOrderMapper,
+                                 ClientService clientService,
+                                 EmployeeService employeeService) {
         super(clientOrdersRepository, clientOrderMapper);
         this.clientOrdersRepository = clientOrdersRepository;
+        this.clientService = clientService;
+        this.employeeService = employeeService;
     }
 
     public Page<ClientOrderDTO> getAll(Pageable pageable) {
@@ -53,6 +64,15 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
         newObject.setCreatedBy(SecurityContextHolder.getContext().getAuthentication().getName());
         newObject.setStatus(ClientOrderStatusConstants.LOOSE);
         return genericMapper.toDTO(clientOrdersRepository.save(genericMapper.toEntity(newObject)));
+    }
+
+    public ClientOrderDTO update(ClientOrderDTO updatedOrder, Long clientId, Long employeeId) throws NotFoundException {
+        ClientDTO clientDTO = clientService.getOne(clientId);
+        EmployeeDTO employeeDTO = employeeService.getOne(employeeId);
+        updatedOrder.setClientDTO(clientDTO);
+        updatedOrder.setEmployeeDTO(employeeDTO);
+        create(updatedOrder);
+        return updatedOrder;
     }
 
     public ClientOrderDTO take(EmployeeDTO employeeDTO, ClientOrderDTO clientOrderDTO) {

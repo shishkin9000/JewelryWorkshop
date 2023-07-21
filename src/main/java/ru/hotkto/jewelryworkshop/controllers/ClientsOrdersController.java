@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
@@ -22,6 +23,7 @@ import ru.hotkto.jewelryworkshop.utils.ContextUserTaker;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 
 @Controller
@@ -137,7 +139,27 @@ public class ClientsOrdersController {
         return "redirect:/clientsOrders";
     }
 
+    @GetMapping("/update/{id}")
+    public String update(@PathVariable Long id, Model model) throws NotFoundException {
+        ClientOrderDTO clientOrderDTO = clientOrderService.getOne(id);
+        List<ClientDTO> clients = clientService.getAll();
+        List<EmployeeDTO> employees = employeeService.getAll();
+        model.addAttribute("order", clientOrderDTO);
+        model.addAttribute("clients", clients);
+        model.addAttribute("employees", employees);
+        return "clientsOrders/update";
+    }
 
+    @PostMapping("/update")
+    public String update(@ModelAttribute("orderForm") ClientOrderDTO clientOrderDTO,
+                         @RequestParam("id") Long orderId
+//                        ,@RequestParam("clientId") Long clientId,
+//                         @RequestParam("employeeId") Long employeeId
+    ) throws NotFoundException {
+        clientOrderDTO.setId(orderId);
+        clientOrderService.update(clientOrderDTO);
+        return "redirect:/clientOrders/" + orderId;
+    }
 
 
 }

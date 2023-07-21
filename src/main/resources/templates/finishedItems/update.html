@@ -34,7 +34,7 @@
       <input name="gemsInfo" th:value="${item.getGemsInfo()}" type="text" class="form-control" id="gemsInfo">
     </div>
     <div class="mb-3">
-      <label for="metalTypes" class="form-label">Тип металла</label>
+      <label for="metalType-choice" class="form-label">Тип металла</label>
       <input class="form-control" list="metalTypes" id="metalType-choice" name="metalTypeId" required>
       <datalist id="metalTypes">
 <!--        <option selected th:value="${item.getMetalTypes().get(0).getTitle()}" th:text="${item.getMetalTypes().get(0).getTitle()}"></option>-->
@@ -42,7 +42,7 @@
       </datalist>
     </div>
     <div class="mb-3">
-      <label for="gemTypes" class="form-label">Тип камня</label>
+      <label for="gemType-choice" class="form-label">Тип камня</label>
       <input class="form-control" list="gemTypes" id="gemType-choice" name="gemTypeId" required>
       <datalist id="gemTypes">
 <!--        <option selected th:value="${item.getGemTypes().get(0).getTitle()}" th:text="${item.getGemTypes().get(0).getTitle()}"></option>-->

@@ -54,9 +54,28 @@
       </div>
       </form>
       <hr class="hr"/>
-      <div class="mt-2">
-        <button type="button" class="btn btn-secondary" onclick="window.history.back()">Back</button>
-      </div>
+    <div class="row">
+      <a class="btn btn-secondary"
+         th:href="'/clientsOrders'">Назад</a>
+    </div>
+    <div class="row">
+      <a class="btn btn-primary margin-top-5px"
+         sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
+         th:href="'/clientsOrders/update/' + ${order.getId()}">Править</a>
+    </div>
+    <div class="row">
+      <a class="btn btn-warning margin-top-5px text-color-white"
+         sec:authorize="isAuthenticated() && hasRole('ADMIN')"
+         th:if="${order.isDeleted()}"
+         th:href="'/clients/restore/' + ${order.getId()}">Восстановить</a>
+    </div>
+    <div class="row">
+      <a class="btn btn-warning text-color-white margin-top-5px"
+         sec:authorize="isAuthenticated() && hasRole('ADMIN')"
+         th:if="${!order.isDeleted()}"
+         th:href="'/clients/soft-delete/' + ${order.getId()}"
+         onclick="return confirm('Заказчик будет помечен в базе флагом \'isDeleted()\'')">Удалить</a>
+    </div>
   </div>
 </form>
 </body>

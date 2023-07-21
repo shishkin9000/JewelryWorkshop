@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8">
+  <title>Изменение</title>
+</head>
+<body>
+<div layout:fragment="content">
+  <h3 class="mt-3 mb-3">Изменение данных о заказе</h3>
+  <form style="max-width: 50vw" method="POST" th:action="@{/clientsOrders/update}" th:object="${orderForm}">
+
+    <input type="hidden" name="id" th:value="${order.getId()}" class="form-control" id="id">
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Описание</label>
+      <input th:value="${order.getDescription()}" name="description" type="text" class="form-control" id="description">
+    </div>
+
+    <div class="mb-3">
+      <label for="deadline" class="form-label">Выполнить до</label>
+      <input th:value="${order.getDeadline()}" name="deadline" type="date" class="form-control" id="deadline">
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Цена</label>
+      <input th:value="${order.getPrice()}" name="price" type="number" class="form-control" id="price">
+    </div>
+
+    <div class="mb-3">
+      <label for="clients" class="form-label">Заказчик:</label>
+      <select id="clients" class="form-control" name="clientDTO">
+        <option selected th:value="${order.getClientDTO()}"
+                th:text="${order.getClientDTO().getFullName() + ' ' + order.getClientDTO().getPhone()}"></option>
+        <option th:each="client : ${clients}" th:value="${client}" th:text="${client.getFullName() + ' ' + client.getPhone()}"></option>
+      </select>
+    </div>
+
+<!--    <div class="mb-3">-->
+<!--      <label for="employees" class="form-label">Сотрудник:</label>-->
+<!--&lt;!&ndash;      <input class="form-control" list="employees" name="employeeId">&ndash;&gt;-->
+<!--      <select id="employees" class="form-control">-->
+<!--      <option selected th:value="${order.getEmployeeDTO() == null ? null : order.getEmployeeDTO()}"-->
+<!--                       th:text="${order.getEmployeeDTO() == null ? null : order.getEmployeeDTO().getFullName() + ' ' + order.getEmployeeDTO().getPhone()}"></option>-->
+<!--      <option th:each="employee : ${employees}" th:value="${employee}" th:text="${employee.getFullName() + ' ' + employee.getPhone()}"></option>-->
+<!--      </select>-->
+<!--    </div>-->
+
+    <button type="submit" class="btn btn-primary">Обновить</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href=''">Назад</button>
+
+  </form>
+</div>
+</body>
+</html>

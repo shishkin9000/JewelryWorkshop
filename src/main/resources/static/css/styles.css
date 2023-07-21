@@ -77,6 +77,10 @@ h3 {
     margin-top: 300px !important;
 }
 
-.index-info {
-    font-size: xx-large;
+/*.index-info {*/
+/*    font-size: xx-large;*/
+/*}*/
+
+.font-size-xxx-large {
+    font-size: xxx-large;
 }

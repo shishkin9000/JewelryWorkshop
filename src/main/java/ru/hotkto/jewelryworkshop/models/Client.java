@@ -20,7 +20,7 @@ public class Client extends GenericModel {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone", nullable = false, unique = true)
     private String phone;
 
     @OneToMany(mappedBy = "client")

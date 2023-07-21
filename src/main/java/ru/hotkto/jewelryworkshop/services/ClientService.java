@@ -27,6 +27,7 @@ public class ClientService extends GenericService<Client, ClientDTO> {
     public Page<ClientDTO> getAll(Pageable pageable) {
         Page<Client> clientsPage = clientsRepository.findAll(pageable);
         List<ClientDTO> clientDTOList = genericMapper.toDTOs(clientsPage.getContent());
+        clientDTOList = clientDTOList.stream().filter(clientDTO -> !clientDTO.isDeleted()).toList();
         return new PageImpl<>(clientDTOList, pageable, clientsPage.getTotalElements());
     }
 
@@ -47,4 +48,11 @@ public class ClientService extends GenericService<Client, ClientDTO> {
         clientDTO.setCreatedWhen(LocalDateTime.now());
         return genericMapper.toDTO(clientsRepository.save(genericMapper.toEntity(clientDTO)));
     }
+
+    public boolean isPhoneUnique(ClientDTO clientDTO) {
+        List<Client> clients = clientsRepository.findAll();
+        long total = clients.stream().filter(client -> client.getPhone().equals(clientDTO.getPhone())).count();
+        return total == 0;
+    }
+
 }

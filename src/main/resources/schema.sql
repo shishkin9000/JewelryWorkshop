@@ -8,7 +8,7 @@ create table clients
     deleted_when timestamp,
 
     full_name    VARCHAR(50) not null,
-    phone        VARCHAR(50) not null
+    phone        VARCHAR(50) not null unique
 );
 
 create table employees_positions

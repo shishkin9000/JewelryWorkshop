@@ -3,6 +3,7 @@ package ru.hotkto.jewelryworkshop.mappers;
 import jakarta.annotation.PostConstruct;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
 import ru.hotkto.jewelryworkshop.models.Client;
 import ru.hotkto.jewelryworkshop.models.ClientOrder;
@@ -60,17 +61,19 @@ public class ClientOrderMapper extends GenericMapper<ClientOrder, ClientOrderDTO
 
     @Override
     protected void mapSpecificFields(ClientOrderDTO source, ClientOrder destination) {
-        Long clientId = source.getClientDTO().getId();
+        Long clientId;
         Long employeeId;
-        if (Objects.nonNull(source.getEmployeeDTO().getId())) {
+        if (Objects.nonNull(source.getClientDTO())) {
+            clientId = source.getClientDTO().getId();
+            Client client = clientsRepository.findById(clientId)
+                    .orElseThrow(() -> new RuntimeException("Client with id=" + clientId + " not found"));
+            destination.setClient(client);
+        }
+        if (Objects.nonNull(source.getEmployeeDTO())) {
             employeeId = source.getEmployeeDTO().getId();
             Employee employee = employeesRepository.findById(employeeId)
                     .orElseThrow(() -> new RuntimeException("Employee with id=" + employeeId + " not found"));
             destination.setEmployee(employee);
         }
-        Client client = clientsRepository.findById(clientId)
-                .orElseThrow(() -> new RuntimeException("Client with id=" + clientId + " not found"));
-
-        destination.setClient(client);
     }
 }
