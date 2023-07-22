@@ -15,38 +15,38 @@
           th:action="@{/finishedItems/add}"
           th:object="${finishedItemForm}">
         <div class="mb-3">
-            <label for="itemCode" class="form-label">Артикул</label>
-            <input name="itemCode" type="number" class="form-control" id="itemCode">
+            <label for="itemCode" class="form-label">Артикул:</label>
+            <input name="itemCode" type="number" class="form-control" id="itemCode" required>
         </div>
         <div class="mb-3">
-            <label for="netCost" class="form-label">Себестоимость</label>
+            <label for="netCost" class="form-label">Себестоимость:</label>
             <input name="netCost" type="number" class="form-control" id="netCost">
         </div>
         <div class="mb-3">
-            <label for="description" class="form-label">Описание</label>
-            <input name="description" type="text" class="form-control" id="description">
+            <label for="description" class="form-label">Описание:</label>
+            <input name="description" type="text" class="form-control" id="description" required>
         </div>
         <div class="mb-3">
-            <label for="metalsInfo" class="form-label">Данные о металлах</label>
-            <input name="metalsInfo" type="text" class="form-control" id="metalsInfo">
+            <label for="metalsInfo" class="form-label">Данные о металлах:</label>
+            <input name="metalsInfo" type="text" class="form-control" id="metalsInfo" required>
         </div>
         <div class="mb-3">
-            <label for="gemsInfo" class="form-label">Данные о камнях</label>
-            <input name="gemsInfo" type="text" class="form-control" id="gemsInfo">
+            <label for="gemsInfo" class="form-label">Данные о камнях:</label>
+            <input name="gemsInfo" type="text" class="form-control" id="gemsInfo" required>
         </div>
         <div class="mb-3">
-            <label for="metalTypes" class="form-label">Тип металла</label>
-            <input class="form-control" list="metalTypes" id="metalType-choice" name="metalTypeId">
-            <datalist id="metalTypes">
+            <label for="metalType" class="form-label">Тип металла:</label>
+            <select id="metalType" class="form-control" name="metalId" required>
+                <option selected th:value="null"></option>
                 <option th:each="metal : ${metalTypes}" th:value="${metal.getId()}" th:text="${metal.getTitle()}"></option>
-            </datalist>
+            </select>
         </div>
         <div class="mb-3">
-            <label for="gemTypes" class="form-label">Тип камня</label>
-            <input class="form-control" list="gemTypes" id="gemType-choice" name="gemTypeId">
-            <datalist id="gemTypes">
-                <option th:each="gem : ${gemTypes}" th:value="${gem.getId()}" th:text="${gem.getTitle()}"></option>
-            </datalist>
+            <label for="gemType" class="form-label">Тип камня:</label>
+            <select id="gemType" class="form-control" name="gemId" required>
+                <option selected th:value="null"></option>
+                <option th:each="gemType : ${gemTypes}" th:value="${gemType.getId()}" th:text="${gemType.getTitle()}"></option>
+            </select>
         </div>
         <div class="mt-3 form-floating">
             <input name="photo"

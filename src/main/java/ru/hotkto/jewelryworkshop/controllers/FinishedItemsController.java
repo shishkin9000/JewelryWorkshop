@@ -51,12 +51,12 @@ public class FinishedItemsController {
 
     @PostMapping("/add")
     public String addItem(@ModelAttribute("finishedItemForm") FinishedItemDTO finishedItemDTO,
-                          @RequestParam("metalTypeId") Long metalTypeId,
-                          @RequestParam("gemTypeId") Long gemTypeId,
+                          @RequestParam("metalId") Long metalId,
+                          @RequestParam("gemId") Long gemId,
                           @RequestParam(value = "photo", required = false) MultipartFile file) throws NotFoundException {
         log.info(finishedItemDTO.toString());
         if (file != null && file.getSize() > 0) {
-            finishedItemService.create(finishedItemDTO, file, metalTypeId, gemTypeId);
+            finishedItemService.create(finishedItemDTO, file, metalId, gemId);
         } else {
             finishedItemService.create(finishedItemDTO);
         }
