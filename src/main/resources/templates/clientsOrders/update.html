@@ -31,22 +31,21 @@
 
     <div class="mb-3">
       <label for="clients" class="form-label">Заказчик:</label>
-      <select id="clients" class="form-control" name="clientDTO">
-        <option selected th:value="${order.getClientDTO()}"
+      <select id="clients" class="form-control" name="clientId">
+        <option selected th:value="${order.getClientDTO().getId()}"
                 th:text="${order.getClientDTO().getFullName() + ' ' + order.getClientDTO().getPhone()}"></option>
-        <option th:each="client : ${clients}" th:value="${client}" th:text="${client.getFullName() + ' ' + client.getPhone()}"></option>
+        <option th:each="client : ${clients}" th:value="${client.getId()}" th:text="${client.getFullName() + ' ' + client.getPhone()}"></option>
       </select>
     </div>
 
-<!--    <div class="mb-3">-->
-<!--      <label for="employees" class="form-label">Сотрудник:</label>-->
-<!--&lt;!&ndash;      <input class="form-control" list="employees" name="employeeId">&ndash;&gt;-->
-<!--      <select id="employees" class="form-control">-->
-<!--      <option selected th:value="${order.getEmployeeDTO() == null ? null : order.getEmployeeDTO()}"-->
-<!--                       th:text="${order.getEmployeeDTO() == null ? null : order.getEmployeeDTO().getFullName() + ' ' + order.getEmployeeDTO().getPhone()}"></option>-->
-<!--      <option th:each="employee : ${employees}" th:value="${employee}" th:text="${employee.getFullName() + ' ' + employee.getPhone()}"></option>-->
-<!--      </select>-->
-<!--    </div>-->
+    <div class="mb-3">
+      <label for="employees" class="form-label">Сотрудник:</label>
+      <select id="employees" class="form-control" name="employeeId">
+      <option selected th:value="${order.getEmployeeDTO() == null ? null : order.getEmployeeDTO().getId()}"
+                       th:text="${order.getEmployeeDTO() == null ? null : order.getEmployeeDTO().getFullName()}"></option>
+      <option th:each="employee : ${employees}" th:value="${employee.getId()}" th:text="${employee.getFullName()}"></option>
+      </select>
+    </div>
 
     <button type="submit" class="btn btn-primary">Обновить</button>
     <button type="button" class="btn btn-secondary" onclick="location.href=''">Назад</button>

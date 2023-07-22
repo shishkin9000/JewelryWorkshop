@@ -13,25 +13,31 @@
     <h3 th:text="'Информация о заказе: ' + ${order.getId()}"></h3>
     <form class="row g-1">
       <div class="mb-2 row">
-        <label for="status" class="col-sm-2 col-form-label no-border">Состояние</label>
+        <label for="status" class="col-sm-2 col-form-label no-border">Создан:</label>
+        <div class="col-sm-10">
+          <p th:text="${order.getCreatedWhen().format(formatter)}" type="text" readonly class="form-control-plaintext" id="created">
+        </div>
+      </div>
+      <div class="mb-2 row">
+        <label for="status" class="col-sm-2 col-form-label no-border">Состояние:</label>
         <div class="col-sm-10">
           <p th:text="${order.getStatus()}" type="text" readonly class="form-control-plaintext" id="status">
         </div>
       </div>
       <div class="mb-2 row">
-        <label for="description" class="col-sm-2 col-form-label no-border">Описание</label>
+        <label for="description" class="col-sm-2 col-form-label no-border">Описание:</label>
         <div class="col-sm-10">
           <p th:text="${order.getDescription()}" type="text" readonly class="form-control-plaintext" id="description">
         </div>
       </div>
       <div class="mb-2 row">
-        <label for="price" class="col-sm-2 col-form-label">Цена</label>
+        <label for="price" class="col-sm-2 col-form-label">Цена:</label>
         <div class="col-sm-10">
           <p th:text="${order.getPrice()}" class="form-control-plaintext" id="price">
         </div>
       </div>
       <div class="mb-2 row">
-        <label for="deadline" class="col-sm-2 col-form-label">Выполнить до</label>
+        <label for="deadline" class="col-sm-2 col-form-label">Выполнить до:</label>
         <div class="col-sm-10">
           <p th:text="${order.getDeadline()}"
              th:classappend="${order.getDeadline() <= now && order.getStatus() != 'выполнен'} ? 'red-text'"
@@ -39,17 +45,25 @@
         </div>
       </div>
       <div class="mb-2 row">
-        <label for="deadline" class="col-sm-2 col-form-label">Заказчик</label>
+        <label for="deadline" class="col-sm-2 col-form-label">Заказчик:</label>
         <div class="col-sm-10">
           <p th:text="${order.getClientDTO().getFullName()}"
              class="form-control-plaintext" id="client">
         </div>
       </div>
       <div class="mb-2 row">
-        <label for="deadline" class="col-sm-2 col-form-label">Телефон</label>
+        <label for="deadline" class="col-sm-2 col-form-label">Телефон:</label>
         <div class="col-sm-10">
           <p th:text="${order.getClientDTO().getPhone()}"
              class="form-control-plaintext" id="phone">
+        </div>
+      </div>
+      <div class="mb-2 row">
+        <label for="deadline" class="col-sm-2 col-form-label">Сотрудник:</label>
+        <div class="col-sm-10">
+          <p th:text="${order.getEmployeeDTO().getFullName()}"
+             th:classappend="${order.getEmployeeDTO().getFullName().equals('Не назначен')} ? 'red-text'"
+             class="form-control-plaintext" id="employee">
         </div>
       </div>
       </form>
@@ -67,13 +81,13 @@
       <a class="btn btn-warning margin-top-5px text-color-white"
          sec:authorize="isAuthenticated() && hasRole('ADMIN')"
          th:if="${order.isDeleted()}"
-         th:href="'/clients/restore/' + ${order.getId()}">Восстановить</a>
+         th:href="'/clientsOrders/restore/' + ${order.getId()}">Восстановить</a>
     </div>
     <div class="row">
       <a class="btn btn-warning text-color-white margin-top-5px"
          sec:authorize="isAuthenticated() && hasRole('ADMIN')"
          th:if="${!order.isDeleted()}"
-         th:href="'/clients/soft-delete/' + ${order.getId()}"
+         th:href="'/clientsOrders/soft-delete/' + ${order.getId()}"
          onclick="return confirm('Заказчик будет помечен в базе флагом \'isDeleted()\'')">Удалить</a>
     </div>
   </div>

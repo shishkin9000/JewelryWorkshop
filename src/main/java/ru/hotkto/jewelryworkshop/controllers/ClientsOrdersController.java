@@ -103,6 +103,8 @@ public class ClientsOrdersController {
     public String getInfo(@PathVariable Long id, Model model) throws NotFoundException {
         ClientOrderDTO clientOrderDTO = clientOrderService.getOne(id);
         LocalDate now = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+        model.addAttribute("formatter", formatter);
         model.addAttribute("order", clientOrderDTO);
         model.addAttribute("now", now);
         return "clientsOrders/info";
@@ -115,16 +117,19 @@ public class ClientsOrdersController {
     }
 
     @GetMapping("/add")
-    public String addOrder(Model model) {
+    public String addOrder(Model model) throws NotFoundException {
         model.addAttribute("clients", clientService.getAll());
         model.addAttribute("employees", employeeService.getAll());
+        model.addAttribute("defaultEmployee", employeeService.getOne(1L));
         return "clientsOrders/add";
     }
 
     @PostMapping("/add")
     public String create(@ModelAttribute("orderForm") ClientOrderDTO clientOrderDTO,
-                         @RequestParam("clientId") Long clientId) throws NotFoundException {
+                         @RequestParam("clientId") Long clientId,
+                         @RequestParam("employeeId") Long employeeId) throws NotFoundException {
         clientOrderDTO.setClientDTO(clientService.getOne(clientId));
+        clientOrderDTO.setEmployeeDTO(employeeService.getOne(employeeId));
         clientOrderService.create(clientOrderDTO);
         return "redirect:/clientsOrders";
     }
@@ -153,13 +158,24 @@ public class ClientsOrdersController {
     @PostMapping("/update")
     public String update(@ModelAttribute("orderForm") ClientOrderDTO clientOrderDTO,
                          @RequestParam("id") Long orderId
-//                        ,@RequestParam("clientId") Long clientId,
-//                         @RequestParam("employeeId") Long employeeId
+                        ,@RequestParam("clientId") Long clientId,
+                         @RequestParam("employeeId") Long employeeId
     ) throws NotFoundException {
         clientOrderDTO.setId(orderId);
-        clientOrderService.update(clientOrderDTO);
-        return "redirect:/clientOrders/" + orderId;
+        clientOrderService.update(clientOrderDTO, clientId, employeeId);
+        return "redirect:/clientsOrders/" + orderId;
     }
 
+    @GetMapping("/soft-delete/{id}")
+    public String softDelete(@PathVariable("id") Long id) throws NotFoundException {
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        clientOrderService.softDelete(id, name);
+        return "redirect:/clientsOrders/" + id;
+    }
 
+    @GetMapping("/restore/{id}")
+    public String restore(@PathVariable("id") Long id) throws NotFoundException {
+        clientOrderService.restore(id);
+        return "redirect:/clientsOrders/" + id;
+    }
 }

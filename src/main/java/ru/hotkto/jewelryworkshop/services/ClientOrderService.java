@@ -41,7 +41,10 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
 
     public Page<ClientOrderDTO> getAll(Pageable pageable) {
         Page<ClientOrder> clientsOrdersPage =  clientOrdersRepository.findAll(pageable);
-        List<ClientOrderDTO> clientOrderDTOList = genericMapper.toDTOs(clientsOrdersPage.getContent());
+        //Ниже исключили Заказы помеченные флагом "isDeleted"
+        List<ClientOrderDTO> clientOrderDTOList = genericMapper.toDTOs(clientsOrdersPage.getContent()
+                .stream()
+                .filter(clientOrder -> !clientOrder.isDeleted()).toList());
         return new PageImpl<>(clientOrderDTOList, pageable, clientsOrdersPage.getTotalElements());
     }
 

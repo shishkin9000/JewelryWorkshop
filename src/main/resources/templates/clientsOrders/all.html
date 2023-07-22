@@ -90,8 +90,7 @@
                 </th>
                 <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">Телефон
                 </th>
-                <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">
-                    Сотрудник
+                <th sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))" scope="col">Сотрудник
                 </th>
                 <th sec:authorize="isAuthenticated()" scope="col">Подробно</th>
                 <th sec:authorize="isAuthenticated() && hasRole('USER')" scope="col">Взять заказ</th>
@@ -111,7 +110,8 @@
                 <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                     th:text="${order.getClientDTO().getPhone()}"></td>
                 <td sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
-                    th:text="${order.getEmployeeDTO() == null } ? '' : ${order.getEmployeeDTO().getFullName()}"></td>
+                    th:text="${order.getEmployeeDTO() == null } ? '' : ${order.getEmployeeDTO().getFullName()}"
+                    th:classappend="${order.getEmployeeDTO() != null && order.getEmployeeDTO().getFullName().equals('Не назначен')} ? 'red-text'"></td>
                 <td>
                     <div sec:authorize="isAuthenticated()">
                         <a class="btn btn-sm btn-outline-success"

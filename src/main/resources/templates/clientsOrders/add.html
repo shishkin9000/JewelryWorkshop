@@ -12,37 +12,30 @@
     <form style="max-width: 50vw" method="POST" th:action="@{/clientsOrders/add}" th:object="${orderForm}">
         <div class="mb-3">
             <label for="description" class="form-label">Описание</label>
-            <input name="description" type="text" class="form-control" id="description">
+            <input name="description" type="text" class="form-control" id="description" required>
         </div>
         <div class="mb-3">
             <label for="deadline" class="form-label">Выполнить до</label>
-            <input name="deadline" type="date" class="form-control" id="deadline">
+            <input name="deadline" type="date" class="form-control" id="deadline" required>
         </div>
         <div class="mb-3">
             <label for="price" class="form-label">Цена</label>
-            <input name="price" type="number" class="form-control" id="price">
+            <input name="price" type="number" class="form-control" id="price" required>
         </div>
         <div class="mb-3">
-            <label for="client-choice" class="form-label">Заказчик</label>
-            <input class="form-control" list="clients" id="client-choice" name="clientId">
-            <datalist id="clients">
-<!--                <select class="form-select" name="clientId" id="clientId">-->
-<!--                    <option selected>choose client from list</option>-->
-                    <option th:each="client : ${clients}" th:value="${client.getId()}"
-                            th:text="${client.getFullName() + ' ' + client.getPhone()}"></option>
-<!--                </select>-->
-            </datalist>
+            <label for="clients" class="form-label">Заказчик:</label>
+            <select id="clients" class="form-control" name="clientId" required>
+                <option selected th:value="null"></option>
+                <option th:each="client : ${clients}" th:value="${client.getId()}" th:text="${client.getFullName() + ' ' + client.getPhone()}"></option>
+            </select>
         </div>
         <div class="mb-3">
-            <label for="employee-choice" class="form-label">Сотрудник</label>
-            <input class="form-control" list="employees" id="employee-choice" name="employeeId">
-            <datalist id="employees">
-<!--                <select class="form-select" name="employeeId" id="employeeId">-->
-<!--                    <option selected>choose employee from list</option>-->
-                    <option th:each="employee : ${employees}" th:value="${employee.getId()}"
-                            th:text="${employee.getFullName()}"></option>
-<!--                </select>-->
-            </datalist>
+            <label for="employees" class="form-label">Сотрудник:</label>
+            <select id="employees" class="form-control" name="employeeId" required>
+                <option selected th:value="${defaultEmployee.getId()}"
+                        th:text="${defaultEmployee.getFullName()}"></option>
+                <option th:each="employee : ${employees}" th:value="${employee.getId()}" th:text="${employee.getFullName()}"></option>
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Добавить</button>
         <button type="button" class="btn btn-secondary" onclick="location.href=''">Назад</button>
