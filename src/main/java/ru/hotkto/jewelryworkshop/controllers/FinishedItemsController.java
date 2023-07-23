@@ -92,11 +92,7 @@ public class FinishedItemsController {
     public String info(@PathVariable Long id,
                        Model model) throws NotFoundException {
         FinishedItemDTO item = finishedItemService.getOne(id);
-        String path = item.getPhotoPath();
-        String[] split = path.split("/");
-        String fileName = split[split.length - 1];
-        model.addAttribute("filename", fileName);
-        model.addAttribute("path", path);
+        //TODO исправить отображение файла
         model.addAttribute("item", item);
         model.addAttribute("metalTypes", metalTypesService.getAll());
         model.addAttribute("gemTypes", gemTypesService.getAll());
