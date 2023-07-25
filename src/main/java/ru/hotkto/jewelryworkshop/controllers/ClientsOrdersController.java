@@ -69,7 +69,8 @@ public class ClientsOrdersController {
         if (Objects.isNull(clientOrderSearchDTO.getOrderDateFrom())
                 && Objects.isNull(clientOrderSearchDTO.getOrderDateTo())
                 && Objects.equals(clientOrderSearchDTO.getClientsName(), "")
-                && !clientOrderSearchDTO.getIsDeadlineExpired()) {
+                && !clientOrderSearchDTO.getIsDeadlineExpired()
+                && !clientOrderSearchDTO.getIsLoose()) {
             pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
             Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
             model.addAttribute("orders", clientOrderDTOs);

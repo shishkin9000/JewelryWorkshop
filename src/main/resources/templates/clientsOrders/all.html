@@ -42,7 +42,16 @@
                             <option th:value="${false}" th:text="Нет" selected></option>
                             <option th:value="${true}" th:text="Да"></option>
                         </select>
-                        <label for="orderDateFrom">Просрочен</label>
+                        <label for="isDeadlineExpired">Просрочен</label>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="form-floating">
+                        <select class="form-select" name="isLoose" id="isLoose">
+                            <option th:value="${false}" th:text="Нет" selected></option>
+                            <option th:value="${true}" th:text="Да"></option>
+                        </select>
+                        <label for="isLoose">Свободен</label>
                     </div>
                 </div>
 <!--                <div class="col-md"></div>-->

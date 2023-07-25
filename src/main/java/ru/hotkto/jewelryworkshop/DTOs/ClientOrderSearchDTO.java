@@ -10,4 +10,5 @@ public class ClientOrderSearchDTO {
     private LocalDate orderDateTo;
     private String clientsName;
     private Boolean isDeadlineExpired;
+    private Boolean isLoose;
 }
