@@ -85,23 +85,14 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
 
     public Page<ClientOrderDTO> searchDispatcher(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {
 
-        if (Objects.isNull(clientOrderSearchDTO.getOrderDateFrom())
-                && Objects.isNull(clientOrderSearchDTO.getOrderDateTo())
-                && Objects.equals(clientOrderSearchDTO.getClientsName(), "")
-                && !clientOrderSearchDTO.getIsDeadlineExpired()
-                && !clientOrderSearchDTO.getIsLoose()) {
-            return getAll(pageable);
-        }
-
         LocalDate orderDateFrom = clientOrderSearchDTO.getOrderDateFrom();
         LocalDate orderDateTo = clientOrderSearchDTO.getOrderDateTo();
         String clientsName = clientOrderSearchDTO.getClientsName();
-        Boolean isDeadlineExpired = clientOrderSearchDTO.getIsDeadlineExpired();
-        Boolean isLoose = clientOrderSearchDTO.getIsLoose();
-        String looseStatus = isLoose ? "свободен" : null;
+        Boolean isDeadlineExpired = clientOrderSearchDTO.getIsDeadlineExpired() ? true : null;
+        String looseStatus = clientOrderSearchDTO.getIsLoose() ? "свободен" : null;
         Page<ClientOrder> ordersPaginated;
 
-        if (isDeadlineExpired) {
+        if (isDeadlineExpired != null) {
             ordersPaginated = clientOrdersRepository.searchExpiredOrders(
                     orderDateFrom,
                     orderDateTo,

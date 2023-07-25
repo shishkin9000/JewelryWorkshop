@@ -39,7 +39,7 @@
                 <div class="col-md">
                     <div class="form-floating">
                         <select class="form-select" name="isDeadlineExpired" id="isDeadlineExpired">
-                            <option th:value="${false}" th:text="Нет" selected></option>
+                            <option th:value="${false}" th:text="Неважно" selected></option>
                             <option th:value="${true}" th:text="Да"></option>
                         </select>
                         <label for="isDeadlineExpired">Просрочен</label>
@@ -48,7 +48,7 @@
                 <div class="col-md">
                     <div class="form-floating">
                         <select class="form-select" name="isLoose" id="isLoose">
-                            <option th:value="${false}" th:text="Нет" selected></option>
+                            <option th:value="${false}" th:text="Неважно" selected></option>
                             <option th:value="${true}" th:text="Да"></option>
                         </select>
                         <label for="isLoose">Свободен</label>

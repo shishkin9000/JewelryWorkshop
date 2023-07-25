@@ -38,7 +38,6 @@ public interface ClientOrdersRepository extends GenericRepository<ClientOrder> {
             where cast(co.created_when as date) >= coalesce(:orderDateFrom, cast('1990-01-01' as date))
             and cast(co.created_when as date) <= coalesce(:orderDateTo, cast('2100-01-01' as date))
             and c.full_name ilike '%' || coalesce(:clientsName, '%') || '%'
-            and co.deadline > now()
             and co.status ILIKE coalesce(:looseStatus,'%')
             """)
     Page<ClientOrder> searchOrders(@Param(value = "orderDateFrom") LocalDate orderDateFrom,
