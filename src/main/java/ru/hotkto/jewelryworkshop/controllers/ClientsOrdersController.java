@@ -4,7 +4,6 @@ import javassist.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +12,6 @@ import ru.hotkto.jewelryworkshop.DTOs.ClientDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderDTO;
 import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
-import ru.hotkto.jewelryworkshop.constants.ClientOrderStatusConstants;
 import ru.hotkto.jewelryworkshop.services.ClientOrderService;
 import ru.hotkto.jewelryworkshop.services.ClientService;
 import ru.hotkto.jewelryworkshop.services.EmployeeService;
@@ -21,10 +19,10 @@ import ru.hotkto.jewelryworkshop.services.customUserDetails.CustomUserDetails;
 import ru.hotkto.jewelryworkshop.utils.ContextUserTaker;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Objects;
+
+
 
 @Controller
 @RequestMapping("/clientsOrders")
@@ -63,25 +61,11 @@ public class ClientsOrdersController {
                                @ModelAttribute("orderSearchForm") ClientOrderSearchDTO clientOrderSearchDTO,
                                Model model) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
+        Page<ClientOrderDTO> orders = clientOrderService.searchDispatcher(clientOrderSearchDTO, pageRequest);
         DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
         model.addAttribute("now", LocalDate.now());
         model.addAttribute("formatter", formatter);
-        if (Objects.isNull(clientOrderSearchDTO.getOrderDateFrom())
-                && Objects.isNull(clientOrderSearchDTO.getOrderDateTo())
-                && Objects.equals(clientOrderSearchDTO.getClientsName(), "")
-                && !clientOrderSearchDTO.getIsDeadlineExpired()
-                && !clientOrderSearchDTO.getIsLoose()) {
-            pageRequest = PageRequest.of(page - 1, pageSize, Sort.by(Sort.Direction.DESC, "id"));
-            Page<ClientOrderDTO> clientOrderDTOs = clientOrderService.getAll(pageRequest);
-            model.addAttribute("orders", clientOrderDTOs);
-            return "clientsOrders/all";
-        }
-        if (clientOrderSearchDTO.getIsDeadlineExpired()) {
-            model.addAttribute("orders", clientOrderService.searchExpiredOrders(clientOrderSearchDTO, pageRequest));
-        } else {
-            model.addAttribute("orders", clientOrderService.searchOrders(clientOrderSearchDTO, pageRequest));
-        }
-
+        model.addAttribute("orders", orders);
         return "clientsOrders/all";
     }
 

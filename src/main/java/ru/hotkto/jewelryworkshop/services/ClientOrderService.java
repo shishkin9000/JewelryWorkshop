@@ -12,17 +12,15 @@ import ru.hotkto.jewelryworkshop.DTOs.ClientOrderSearchDTO;
 import ru.hotkto.jewelryworkshop.DTOs.EmployeeDTO;
 import ru.hotkto.jewelryworkshop.constants.ClientOrderStatusConstants;
 import ru.hotkto.jewelryworkshop.mappers.ClientOrderMapper;
-import ru.hotkto.jewelryworkshop.models.Client;
 import ru.hotkto.jewelryworkshop.models.ClientOrder;
-import ru.hotkto.jewelryworkshop.models.Employee;
 import ru.hotkto.jewelryworkshop.repositories.ClientOrdersRepository;
-import ru.hotkto.jewelryworkshop.repositories.ClientsRepository;
-import ru.hotkto.jewelryworkshop.repositories.EmployeesRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
+import static ru.hotkto.jewelryworkshop.constants.ClientOrderStatusConstants.*;
 @Service
 public class ClientOrderService extends GenericService<ClientOrder, ClientOrderDTO> {
 
@@ -45,12 +43,6 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
         List<ClientOrderDTO> clientOrderDTOList = genericMapper.toDTOs(clientsOrdersPage.getContent()
                 .stream()
                 .filter(clientOrder -> !clientOrder.isDeleted()).toList());
-        return new PageImpl<>(clientOrderDTOList, pageable, clientsOrdersPage.getTotalElements());
-    }
-
-    public Page<ClientOrderDTO> getAllLoose(Pageable pageable) {
-        Page<ClientOrder> clientsOrdersPage =  clientOrdersRepository.searchLooseOrders(pageable);
-        List<ClientOrderDTO> clientOrderDTOList = genericMapper.toDTOs(clientsOrdersPage.getContent());
         return new PageImpl<>(clientOrderDTOList, pageable, clientsOrdersPage.getTotalElements());
     }
 
@@ -91,33 +83,49 @@ public class ClientOrderService extends GenericService<ClientOrder, ClientOrderD
         return genericMapper.toDTO(clientOrdersRepository.save(clientOrder));
     }
 
-    public Page<ClientOrderDTO> searchOrders(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {
+    public Page<ClientOrderDTO> searchDispatcher(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {
+
+        if (Objects.isNull(clientOrderSearchDTO.getOrderDateFrom())
+                && Objects.isNull(clientOrderSearchDTO.getOrderDateTo())
+                && Objects.equals(clientOrderSearchDTO.getClientsName(), "")
+                && !clientOrderSearchDTO.getIsDeadlineExpired()
+                && !clientOrderSearchDTO.getIsLoose()) {
+            return getAll(pageable);
+        }
+
         LocalDate orderDateFrom = clientOrderSearchDTO.getOrderDateFrom();
         LocalDate orderDateTo = clientOrderSearchDTO.getOrderDateTo();
         String clientsName = clientOrderSearchDTO.getClientsName();
-        Page<ClientOrder> ordersPaginated = clientOrdersRepository.searchOrders(
-                orderDateFrom,
-                orderDateTo,
-                clientsName,
-                pageable
-        );
+        Boolean isDeadlineExpired = clientOrderSearchDTO.getIsDeadlineExpired();
+        Boolean isLoose = clientOrderSearchDTO.getIsLoose();
+        String looseStatus = isLoose ? "свободен" : null;
+        Page<ClientOrder> ordersPaginated;
+
+        if (isDeadlineExpired) {
+            ordersPaginated = clientOrdersRepository.searchExpiredOrders(
+                    orderDateFrom,
+                    orderDateTo,
+                    clientsName,
+                    looseStatus,
+                    pageable
+            );
+        } else {
+            ordersPaginated = clientOrdersRepository.searchOrders(
+                    orderDateFrom,
+                    orderDateTo,
+                    clientsName,
+                    looseStatus,
+                    pageable
+            );
+        }
 
         List<ClientOrderDTO> clientDTOList = genericMapper.toDTOs(ordersPaginated.getContent());
         return new PageImpl<>(clientDTOList, pageable, ordersPaginated.getTotalElements());
     }
 
-    public Page<ClientOrderDTO> searchExpiredOrders(ClientOrderSearchDTO clientOrderSearchDTO, Pageable pageable) {
-        LocalDate orderDateFrom = clientOrderSearchDTO.getOrderDateFrom();
-        LocalDate orderDateTo = clientOrderSearchDTO.getOrderDateTo();
-        String clientsName = clientOrderSearchDTO.getClientsName();
-        Page<ClientOrder> ordersPaginated = clientOrdersRepository.searchExpiredOrders(
-                orderDateFrom,
-                orderDateTo,
-                clientsName,
-                pageable
-        );
-
-        List<ClientOrderDTO> clientDTOList = genericMapper.toDTOs(ordersPaginated.getContent());
-        return new PageImpl<>(clientDTOList, pageable, ordersPaginated.getTotalElements());
+    private Page<ClientOrderDTO> getAllLoose(Pageable pageable) {
+        Page<ClientOrder> clientsOrdersPage =  clientOrdersRepository.searchLooseOrders(pageable);
+        List<ClientOrderDTO> clientOrderDTOList = genericMapper.toDTOs(clientsOrdersPage.getContent());
+        return new PageImpl<>(clientOrderDTOList, pageable, clientsOrdersPage.getTotalElements());
     }
 }
