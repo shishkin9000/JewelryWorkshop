@@ -60,7 +60,7 @@
             <div class="mb-2 row">
                 <label for="photo" class="col-sm-2 col-form-label no-border">Фото</label>
                 <div class="col-sm-10">
-                    <img src="/img/workbench.jpg" width="256" height="256" id="photo">
+                    <img th:src="@{/img/jewelry.png}" th:alt="${item.getPhotoPath()}" width="256" height="256" id="photo">
                 </div>
             </div>
             <hr class="hr"/>

@@ -13,5 +13,4 @@ public class ThymeleafHotSwap {
     @Value("${spring.thymeleaf.templates.root}")
     private String templatesRoot;
 
-
 }

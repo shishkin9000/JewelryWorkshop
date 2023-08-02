@@ -1,15 +1,16 @@
 package ru.hotkto.jewelryworkshop.configurations;
 
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import ru.hotkto.jewelryworkshop.constants.MiscellaneousConstants;
 
-public class ResourcesConfig implements WebMvcConfigurer {
+@Configuration
+public class MVCConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/img/**")
-                .addResourceLocations("file://files");
+        registry.addResourceHandler("/files/**")
+                .addResourceLocations("classpath:files/");
     }
 }

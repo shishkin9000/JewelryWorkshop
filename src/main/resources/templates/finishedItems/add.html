@@ -20,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="netCost" class="form-label">Себестоимость:</label>
-            <input name="netCost" type="number" class="form-control" id="netCost">
+            <input name="netCost" type="number" class="form-control" id="netCost" required>
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Описание:</label>
@@ -37,14 +37,14 @@
         <div class="mb-3">
             <label for="metalType" class="form-label">Тип металла:</label>
             <select id="metalType" class="form-control" name="metalId" required>
-                <option selected th:value="null"></option>
+                <option selected>Выберите основной металл</option>
                 <option th:each="metal : ${metalTypes}" th:value="${metal.getId()}" th:text="${metal.getTitle()}"></option>
             </select>
         </div>
         <div class="mb-3">
             <label for="gemType" class="form-label">Тип камня:</label>
             <select id="gemType" class="form-control" name="gemId" required>
-                <option selected th:value="null"></option>
+                <option selected>Выберите основной тип камней</option>
                 <option th:each="gemType : ${gemTypes}" th:value="${gemType.getId()}" th:text="${gemType.getTitle()}"></option>
             </select>
         </div>

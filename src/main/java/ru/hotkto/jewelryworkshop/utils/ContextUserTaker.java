@@ -10,7 +10,7 @@ import ru.hotkto.jewelryworkshop.services.customUserDetails.CustomUserDetails;
 import java.util.Objects;
 
 public class ContextUserTaker {
-    private ContextUserTaker(){}
+    private ContextUserTaker() {}
 
     public static EmployeeDTO getContextUser(EmployeeService service, SecurityContext context) throws NotFoundException {
             CustomUserDetails customUserDetails = (CustomUserDetails) context.getAuthentication().getPrincipal();
