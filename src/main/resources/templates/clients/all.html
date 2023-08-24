@@ -13,7 +13,7 @@
 <div layout:fragment="content">
     <div>
         <form method="POST" th:action="@{/clients/search}" th:object="${clientSearchForm}">
-            <div class="mt-0 row g-2">
+            <div class="mt-0 row g-3">
                 <div class="col-md">
                     <div class="form-floating">
                         <input name="fullName" type="text" class="form-control" id="fullName" placeholder="fullName">
@@ -26,14 +26,14 @@
                         <label for="phone">Телефон</label>
                     </div>
                 </div>
-                <div class="row g-2">
+                <div class="row g-2 search-btn">
                     <button type="submit" class="btn gold-background text-color-white">Поиск</button>
                 </div>
             </div>
         </form>
     </div>
     <hr>
-    <div class="row">
+    <div class="row add__block">
         <a
                 sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                 href="/clients/add"
@@ -42,7 +42,6 @@
                 style="float: right"
                 aria-disabled="true">Добавить заказчика
         </a>
-        <hr>
         <a
                 sec:authorize="isAuthenticated() && (hasRole('ADMIN') || hasRole('MANAGER'))"
                 href="/clientsOrders/add"
